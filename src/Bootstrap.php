@@ -31,7 +31,9 @@ class Bootstrap implements \yii\base\BootstrapInterface
             NotificationEventHandlerInterface::class => BasicNotificationEventHandler::class,
         ]);
 
-        Event::on('*', '*', [NotificatorInterface::class, 'handle']);
+        $notificator = $container->get(NotificatorInterface::class);
+
+        Event::on('*', '*', [$notificator, 'handle']);
 
         if ($app instanceof WebApplication) {
             $this->initUrlRoutes($app);
