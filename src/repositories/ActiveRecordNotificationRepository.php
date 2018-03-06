@@ -1,8 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\repositories;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationSearch;
-use dimichspb\yii\notificator\models\notification\Notification;
+use dimichspb\yii\notificator\models\Notification\search\NotificationSearch;
+use dimichspb\yii\notificator\models\Notification\Notification;
 
 class ActiveRecordNotificationRepository extends BaseNotificationRepository
 {

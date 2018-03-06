@@ -1,5 +1,5 @@
 <?php
-namespace dimichspb\yii\notificator\models\notification;
+namespace dimichspb\yii\notificator\models\Notification;
 
 use dimichspb\yii\notificator\EventTrait;
 use dimichspb\yii\notificator\interfaces\MessageInterface;
@@ -51,6 +51,11 @@ class Notification extends ActiveRecord implements NotificationInterface
      * @var Status[]
      */
     protected $statuses;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     protected function setUserId($userId)
     {

@@ -1,7 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\adapters;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
+use dimichspb\yii\notificator\models\NotificationQueue\search\NotificationQueueSearch;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use yii\db\ActiveRecord;
