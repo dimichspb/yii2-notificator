@@ -3,12 +3,14 @@ namespace dimichspb\yii\notificator;
 
 use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
 use dimichspb\yii\notificator\channels\MailChannel;
+use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use yii\base\Component;
+use yii\base\Event;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveRecord;
 use yii\di\Container;
@@ -32,6 +34,11 @@ class Notificator extends Component implements NotificatorInterface
      */
     public $repository;
 
+    /**
+     * @var NotificationEventHandlerInterface
+     */
+    public $handler;
+
     public $limit = 10;
 
     public $channels = [
@@ -43,11 +50,13 @@ class Notificator extends Component implements NotificatorInterface
     protected $container;
 
     public function __construct(Container $container, NotificationQueueAdapterInterface $adapter,
-                                NotificationRepositoryInterface $repository, array $config = [])
+                                NotificationRepositoryInterface $repository, NotificationEventHandlerInterface $handler,
+                                array $config = [])
     {
         $this->container = $container;
         $this->adapter = $adapter;
         $this->repository = $repository;
+        $this->handler = $handler;
 
         parent::__construct($config);
     }
@@ -95,5 +104,10 @@ class Notificator extends Component implements NotificatorInterface
         $config = $this->channels[$key];
 
         return $this->container->get($channelClass, $config);
+    }
+
+    public function handle(Event $event)
+    {
+        return $this->handler->handle($event);
     }
 }

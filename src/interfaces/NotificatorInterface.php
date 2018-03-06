@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
+use yii\base\Event;
 use yii\data\DataProviderInterface;
 
 interface NotificatorInterface
@@ -27,4 +28,6 @@ interface NotificatorInterface
      * @return DataProviderInterface
      */
     public function filter(array $params = []);
+
+    public function handle(Event $event);
 }
