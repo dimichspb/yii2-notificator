@@ -23,9 +23,6 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        if (\Yii::$app instanceof ConsoleApplication) {
-            $this->controllerNamespace = 'dimichspb\yii\notificator\commands';
-        }
         $this->registerTranslations();
     }
 

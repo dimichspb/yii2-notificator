@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator;
 
+use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use yii\base\InvalidConfigException;
+use yii\di\Container;
 use yii\web\Application as WebApplication;
 use yii\console\Application as ConsoleApplication;
 
@@ -12,11 +14,16 @@ class Bootstrap implements \yii\base\BootstrapInterface
      */
     public function bootstrap($app)
     {
+        /** @var Container $container */
+        $container = $app->container;
+
+        $container->set(NotificatorInterface::class, Notificator::class);
+
         if ($app instanceof WebApplication) {
             $this->initUrlRoutes($app);
         }
         if ($app instanceof ConsoleApplication) {
-           $app->controllerMap['notificator'] = 'dimichspb\yii\notificator\controllers\NotificationQueueController';
+           $app->controllerMap['notificator'] = 'dimichspb\yii\notificator\commands\NotificationQueueController';
         }
     }
 
