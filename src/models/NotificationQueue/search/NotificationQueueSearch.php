@@ -56,13 +56,6 @@ class NotificationQueueSearch extends Model
         ]);
 
         $query->andFilterWhere([
-            '>=', 'send_at', $this->send_at_from,
-        ]);
-        $query->andFilterWhere([
-            '<=', 'send_at', $this->send_at_till,
-        ]);
-
-        $query->andFilterWhere([
             '>=', 'sent_at', $this->sent_at_from,
         ]);
         $query->andFilterWhere([
