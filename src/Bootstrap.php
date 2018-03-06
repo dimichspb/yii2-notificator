@@ -32,6 +32,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
         }
         if ($app instanceof ConsoleApplication) {
            $app->controllerMap['notificator'] = 'dimichspb\yii\notificator\commands\NotificationQueueController';
+           $app->controllerMap['migrate']['migrationPath'][] = '@vendor/dimichspb/yii2-notificator/src/migrations';
         }
     }
 
