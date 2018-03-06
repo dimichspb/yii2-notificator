@@ -49,15 +49,13 @@ class Bootstrap implements \yii\base\BootstrapInterface
         $module = $app->getModule('notificator');
         $config = [
             'class' => 'yii\web\GroupUrlRule',
-            'prefix' => $module->prefix,
+            'prefix' => 'notifications',
+            'routePrefix' => 'notificator',
             'rules' => $module->routes,
         ];
 
-        if ($module->prefix !== 'notificator') {
-            $config['routePrefix'] = 'notificator';
-        }
-
         $rule = \Yii::createObject($config);
+
         $app->getUrlManager()->addRules([$rule], false);
     }
 }
