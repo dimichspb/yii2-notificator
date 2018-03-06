@@ -2,7 +2,7 @@
 namespace dimichspb\yii\notificator\commands;
 
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
-use dimichspb\yii\notificator\Module;
+use yii\base\Module;
 use yii\console\Controller;
 
 class NotificationQueueController extends Controller

@@ -4,7 +4,7 @@ namespace dimichspb\yii\notificator\controllers;
 
 use dimichspb\yii\notificator\forms\Notification\NotificationSearchForm;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
-use dimichspb\yii\notificator\Module;
+use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 

@@ -32,11 +32,6 @@ class Notificator extends Component implements NotificatorInterface
      */
     public $repository;
 
-    /**
-     * @var ManagerInterface
-     */
-    public $manager;
-
     public $limit = 10;
 
     public $channels = [
@@ -48,12 +43,11 @@ class Notificator extends Component implements NotificatorInterface
     protected $container;
 
     public function __construct(Container $container, NotificationQueueAdapterInterface $adapter,
-                                NotificationRepositoryInterface $repository, ManagerInterface $manager, array $config = [])
+                                NotificationRepositoryInterface $repository, array $config = [])
     {
         $this->container = $container;
         $this->adapter = $adapter;
         $this->repository = $repository;
-        $this->manager = $manager;
 
         parent::__construct($config);
     }

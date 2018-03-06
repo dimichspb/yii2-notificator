@@ -1,7 +1,11 @@
 <?php
 namespace dimichspb\yii\notificator;
 
+use dimichspb\yii\notificator\adapters\ActiveRecordNotificationQueueAdapter;
+use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
+use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\repositories\ActiveRecordNotificationRepository;
 use yii\base\InvalidConfigException;
 use yii\di\Container;
 use yii\web\Application as WebApplication;
@@ -17,7 +21,11 @@ class Bootstrap implements \yii\base\BootstrapInterface
         /** @var Container $container */
         $container = \Yii::$container;
 
-        $container->set(NotificatorInterface::class, Notificator::class);
+        $container->setDefinitions([
+            NotificatorInterface::class => Notificator::class,
+            NotificationQueueAdapterInterface::class => ActiveRecordNotificationQueueAdapter::class,
+            NotificationRepositoryInterface::class => ActiveRecordNotificationRepository::class,
+        ]);
 
         if ($app instanceof WebApplication) {
             $this->initUrlRoutes($app);

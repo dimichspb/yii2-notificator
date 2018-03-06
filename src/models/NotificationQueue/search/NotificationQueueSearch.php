@@ -1,5 +1,5 @@
 <?php
-namespace dimichspb\yii\mailqueue\models\MailQueue\search;
+namespace dimichspb\yii\notificator\models\NotificationQueue\search;
 
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use dimichspb\yii\notificator\models\NotificationQueue\Status;
