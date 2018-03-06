@@ -15,7 +15,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
     public function bootstrap($app)
     {
         /** @var Container $container */
-        $container = $app->container;
+        $container = \Yii::$container;
 
         $container->set(NotificatorInterface::class, Notificator::class);
 

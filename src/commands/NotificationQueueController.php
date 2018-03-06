@@ -1,7 +1,6 @@
 <?php
-namespace dimichspb\yii\mailqueue\commands;
+namespace dimichspb\yii\notificator\commands;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\Module;
 use yii\console\Controller;
