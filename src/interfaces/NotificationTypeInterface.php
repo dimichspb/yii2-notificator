@@ -8,6 +8,8 @@ use dimichspb\yii\notificator\models\NotificationType\Param;
 
 interface NotificationTypeInterface
 {
+    public function __construct(NotificationTypeClassInterface $notificationTypeClass, array $config = []);
+
     /**
      * @return Id
      */

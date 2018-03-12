@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationType;
 
+use Assert\Assertion;
 use dimichspb\yii\notificator\EventTrait;
+use dimichspb\yii\notificator\interfaces\NotificationTypeClassInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedAtUpdatedEvent;
@@ -47,6 +49,14 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
      * @var Status[]
      */
     protected $statuses;
+
+    public function __construct(NotificationTypeClassInterface $notificationTypeClass, array $config = [])
+    {
+        $this->notification_type_class = $notificationTypeClass->getClass();
+        $this->updateEvents($notificationTypeClass->getEvents());
+
+        parent::__construct($config);
+    }
 
     public function getId()
     {

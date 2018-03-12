@@ -5,30 +5,35 @@ use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\models\Notification\Id;
 use dimichspb\yii\notificator\models\Notification\search\NotificationSearch;
 use dimichspb\yii\notificator\models\Notification\Notification;
+use yii\db\ActiveRecord;
 
 class ActiveRecordNotificationRepository extends BaseNotificationRepository
 {
     public $notificationClass = Notification::class;
     public $notificationSearchClass = NotificationSearch::class;
 
-    public function get(Id $id)
+    public function get(NotificationInterface $notification)
     {
-        // TODO: Implement get() method.
+        /** @var ActiveRecord $notification */
+        return $notification::findOne($notification->getId());
     }
 
     public function add(NotificationInterface $notification)
     {
-        // TODO: Implement add() method.
+        /** @var ActiveRecord $notification */
+        return $notification->save();
     }
 
-    public function remove(Id $id)
+    public function remove(NotificationInterface $notification)
     {
-        // TODO: Implement remove() method.
+        /** @var ActiveRecord $notification */
+        return $notification->delete();
     }
 
     public function update(NotificationInterface $notification)
     {
-        // TODO: Implement update() method.
+        /** @var ActiveRecord $notification */
+        return $notification->update();
     }
 
     /**

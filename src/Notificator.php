@@ -7,6 +7,7 @@ use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
@@ -102,6 +103,16 @@ class Notificator extends Component implements NotificatorInterface
     public function filterNotification(array $params = [])
     {
         return $this->notificationRepository->filter($params);
+    }
+
+    public function addType(NotificationTypeInterface $notificationType)
+    {
+        return $this->notificationTypeRepository->add($notificationType);
+    }
+
+    public function deleteType(NotificationTypeInterface $notificationType)
+    {
+        return $this->notificationTypeRepository->remove($notificationType);
     }
 
     public function filterNotificationType(array $params = [])

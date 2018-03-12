@@ -6,30 +6,35 @@ use dimichspb\yii\notificator\models\NotificationType\search\NotificationTypeSea
 use dimichspb\yii\notificator\models\NotificationType\Id;
 use dimichspb\yii\notificator\models\NotificationType\NotificationType;
 use yii\data\DataProviderInterface;
+use yii\db\ActiveRecord;
 
 class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeRepository
 {
     public $notificationTypeClass = NotificationType::class;
     public $notificationTypeSearchClass = NotificationTypeSearch::class;
 
-    public function get(Id $id)
+    public function get(NotificationTypeInterface $notificationType)
     {
-        // TODO: Implement get() method.
+        /** @var ActiveRecord $notificationType */
+        return $notificationType::findOne($notificationType->getId());
     }
 
     public function add(NotificationTypeInterface $notificationType)
     {
-        // TODO: Implement add() method.
+        /** @var ActiveRecord $notificationType */
+        return $notificationType->save();
     }
 
-    public function remove(Id $id)
+    public function remove(NotificationTypeInterface $notificationType)
     {
-        // TODO: Implement remove() method.
+        /** @var ActiveRecord $notificationType*/
+        return $notificationType->delete();
     }
 
     public function update(NotificationTypeInterface $notificationType)
     {
-        // TODO: Implement update() method.
+        /** @var ActiveRecord $notificationType */
+        return $notificationType->update();
     }
 
     public function filter(array $params = [])

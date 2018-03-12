@@ -9,11 +9,15 @@ interface NotificatorInterface
 {
     public function add(NotificationInterface $notification);
 
-    public function getChannel($channelClass);
-
     public function get($userId, $limit = null);
 
     public function read(NotificationInterface $notification);
+
+    public function activate(NotificationInterface $notification);
+
+    public function deactivate(NotificationInterface $notification);
+
+    public function getChannel($channelClass);
 
     public function process($limit = null);
 
@@ -29,6 +33,17 @@ interface NotificatorInterface
      */
     public function filterNotification(array $params = []);
 
+    /**
+     * @param NotificationTypeInterface $notificationType
+     * @return mixed
+     */
+    public function addType(NotificationTypeInterface $notificationType);
+
+    /**
+     * @param NotificationTypeInterface $notificationType
+     * @return mixed
+     */
+    public function deleteType(NotificationTypeInterface $notificationType);
     /**
      * @param array $params
      * @return DataProviderInterface
