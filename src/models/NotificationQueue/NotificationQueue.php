@@ -87,9 +87,10 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         $this->created_at = new CreatedAt();
         $this->user_id = new UserId($userId);
         $this->notification_id = $notification->getId();
-        $this->setChannelClass($notification->getChannelClass());
-        $this->setMessage($notification->getMessage());
-        $this->addStatus(new Status(Status::STATUS_NEW));
+        $this->channel_class = $notification->getChannelClass();
+        $this->message_class = $notification->getMessage()->className();
+        $this->message_data = $notification->getMessage()->serialize();
+        $this->statuses[] = new Status(Status::STATUS_NEW);
         
         parent::__construct();
     }
