@@ -3,17 +3,17 @@ namespace dimichspb\yii\notificator;
 
 trait EventTrait
 {
-    private $events = [];
+    private $_events = [];
 
     protected function recordEvent($event)
     {
-        $this->events[] = $event;
+        $this->_events[] = $event;
     }
 
     public function releaseEvents()
     {
-        $events = $this->events;
-        $this->events = [];
+        $events = $this->_events;
+        $this->_events = [];
         return $events;
     }
 }
