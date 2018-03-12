@@ -9,6 +9,7 @@ use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationRepository;
+use dimichspb\yii\notificator\repositories\ActiveRecordNotificationTypeRepository;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\di\Container;
