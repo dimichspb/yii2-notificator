@@ -1,10 +1,10 @@
 <?php
 namespace dimichspb\yii\notificator;
 
-use dimichspb\yii\notificator\adapters\ActiveRecordNotificationQueueAdapter;
+use dimichspb\yii\notificator\adapters\ActiveRecordNotificationQueueRepository;
 use dimichspb\yii\notificator\handlers\BasicNotificationEventHandler;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
-use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
@@ -28,7 +28,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
 
         $container->setDefinitions([
             NotificatorInterface::class => Notificator::class,
-            NotificationQueueAdapterInterface::class => ActiveRecordNotificationQueueAdapter::class,
+            NotificationQueueRepositoryInterface::class => ActiveRecordNotificationQueueRepository::class,
             NotificationRepositoryInterface::class => ActiveRecordNotificationRepository::class,
             NotificationTypeRepositoryInterface::class => ActiveRecordNotificationTypeRepository::class,
             NotificationEventHandlerInterface::class => BasicNotificationEventHandler::class,

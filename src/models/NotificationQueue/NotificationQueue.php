@@ -5,6 +5,7 @@ use dimichspb\yii\notificator\interfaces\ChannelInterface;
 use dimichspb\yii\notificator\EventTrait;
 use dimichspb\yii\notificator\interfaces\MessageInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\NotificationQueue\events\AttemptAddedEvent;
@@ -21,7 +22,7 @@ use yii\helpers\Json;
  * @package dimichspb\yii\notificator\models\NotificationQueue
  *
  */
-class NotificationQueue extends ActiveRecord
+class NotificationQueue extends ActiveRecord implements NotificationQueueInterface
 {
     use EventTrait, InstantiateTrait;
 

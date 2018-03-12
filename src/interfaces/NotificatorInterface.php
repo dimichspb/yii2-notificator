@@ -11,26 +11,47 @@ use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId
 interface NotificatorInterface
 {
     /**
+     * @param array $params
+     * @return DataProviderInterface
+     */
+    public function notifications(array $params = []);
+    /**
      * @param NotificationInterface $notification
      * @return mixed
      */
-    public function add(NotificationInterface $notification);
+    public function addNotification(NotificationInterface $notification);
 
-    public function get(NotificationId $id);
+    /**
+     * @param NotificationId $id
+     * @return NotificationInterface
+     */
+    public function getNotification(NotificationId $id);
 
-    public function update(NotificationInterface $notification);
+    /**
+     * @param NotificationInterface $notification
+     * @return mixed
+     */
+    public function updateNotification(NotificationInterface $notification);
 
-    public function delete(NotificationInterface $notification);
+    /**
+     * @param NotificationInterface $notification
+     * @return mixed
+     */
+    public function deleteNotification(NotificationInterface $notification);
 
-    public function read(NotificationInterface $notification);
+    /**
+     * @param NotificationInterface $notification
+     * @return mixed
+     */
+    public function activateNotification(NotificationInterface $notification);
 
-    public function activate(NotificationInterface $notification);
+    /**
+     * @param NotificationInterface $notification
+     * @return mixed
+     */
+    public function deactivateNotification(NotificationInterface $notification);
 
-    public function deactivate(NotificationInterface $notification);
 
-    public function getChannel($channelClass);
-
-    public function process($limit = null);
 
     /**
      * @param array
@@ -38,14 +59,37 @@ interface NotificatorInterface
      */
     public function queue(array $params = []);
 
+    /**
+     * @param NotificationQueueId $id
+     * @return NotificationQueueInterface
+     */
     public function getQueue(NotificationQueueId $id);
+
+    /**
+     * @param NotificationQueueInterface $notificationQueue
+     * @return mixed
+     */
+    public function addQueue(NotificationQueueInterface $notificationQueue);
+
+    /**
+     * @param NotificationQueueInterface $notificationQueue
+     * @return mixed
+     */
+    public function updateQueue(NotificationQueueInterface $notificationQueue);
+
+    /**
+     * @param NotificationQueueInterface $notificationQueue
+     * @return mixed
+     */
+    public function deleteQueue(NotificationQueueInterface $notificationQueue);
+
+
 
     /**
      * @param array $params
      * @return DataProviderInterface
      */
-    public function filterNotification(array $params = []);
-
+    public function types(array $params = []);
     /**
      * @param NotificationTypeInterface $notificationType
      * @return mixed
@@ -68,11 +112,13 @@ interface NotificatorInterface
      * @return mixed
      */
     public function deleteType(NotificationTypeInterface $notificationType);
-    /**
-     * @param array $params
-     * @return DataProviderInterface
-     */
-    public function filterNotificationType(array $params = []);
+
 
     public function handle(Event $event);
+
+    public function getChannel($channelClass);
+
+    public function process($limit = null);
+
+    public function read(NotificationQueueInterface $notification);
 }

@@ -42,7 +42,7 @@ class NotificationController extends Controller
     public function actionIndex()
     {
         $searchFormModel = new NotificationSearchForm();
-        $dataProvider = $this->notificator->filterNotification(\Yii::$app->request->queryParams);
+        $dataProvider = $this->notificator->notifications(\Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchFormModel,
@@ -81,7 +81,7 @@ class NotificationController extends Controller
      */
     protected function findModel($id)
     {
-        if (!$model = $this->notificator->get(new Id($id))) {
+        if (!$model = $this->notificator->getNotification(new Id($id))) {
             throw new NotificationNotFoundException();
         }
 

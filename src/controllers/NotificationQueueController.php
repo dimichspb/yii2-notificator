@@ -61,7 +61,7 @@ class NotificationQueueController extends Controller
 
     /**
      * @param $id
-     * @return \dimichspb\yii\notificator\interfaces\NotificationTypeInterface|null
+     * @return \dimichspb\yii\notificator\interfaces\NotificationQueueInterface
      * @throws NotificationQueueNotFoundException
      * @throws \Assert\AssertionFailedException
      */

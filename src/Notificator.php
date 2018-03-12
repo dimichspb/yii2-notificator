@@ -1,18 +1,17 @@
 <?php
 namespace dimichspb\yii\notificator;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
 use dimichspb\yii\notificator\channels\MailChannel;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
-use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
-use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\Notification\Id as NotificationId;
 use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
-use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\base\Component;
 use yii\base\Event;
@@ -30,9 +29,9 @@ class Notificator extends Component implements NotificatorInterface
     const EVENT_AFTER_RUN = 'afterRun';
 
     /**
-     * @var NotificationQueueAdapterInterface
+     * @var NotificationQueueRepositoryInterface
      */
-    public $adapter;
+    public $notificationQueueRepository;
 
     /**
      * @var NotificationRepositoryInterface
@@ -59,14 +58,15 @@ class Notificator extends Component implements NotificatorInterface
 
     protected $container;
 
-    public function __construct(Container $container, NotificationQueueAdapterInterface $adapter,
+    public function __construct(Container $container,
+                                NotificationQueueRepositoryInterface $notificationQueueRepository,
                                 NotificationRepositoryInterface $notificationRepository,
                                 NotificationTypeRepositoryInterface $notificationTypeRepository,
                                 NotificationEventHandlerInterface $handler,
                                 array $config = [])
     {
         $this->container = $container;
-        $this->adapter = $adapter;
+        $this->notificationQueueRepository = $notificationQueueRepository;
         $this->notificationRepository = $notificationRepository;
         $this->notificationTypeRepository = $notificationTypeRepository;
         $this->handler = $handler;
@@ -74,24 +74,39 @@ class Notificator extends Component implements NotificatorInterface
         parent::__construct($config);
     }
 
-    public function add(NotificationInterface $notification)
+    public function notifications(array $params = [])
     {
-        return $this->adapter->add($notification);
+        return $this->notificationRepository->filter($params);
     }
 
-    public function get(Id $id)
+    public function addNotification(NotificationInterface $notification)
     {
-        return $this->adapter->get($id);
+        return $this->notificationRepository->add($notification);
     }
 
-    public function read(NotificationInterface $notification)
+    public function getNotification(NotificationId $id)
     {
-        return $this->adapter->read($notification);
+        return $this->notificationRepository->get($id);
     }
 
-    public function process($limit = null)
+    public function updateNotification(NotificationInterface $notification)
     {
-        //$this->adapter->process($limit? $limit: $this->limit);
+        return $this->notificationRepository->update($notification);
+    }
+
+    public function deleteNotification(NotificationInterface $notification)
+    {
+        return $this->notificationRepository->remove($notification);
+    }
+
+    public function activateNotification(NotificationInterface $notification)
+    {
+        // TODO: Implement activate() method.
+    }
+
+    public function deactivateNotification(NotificationInterface $notification)
+    {
+        // TODO: Implement deactivate() method.
     }
 
     /**
@@ -100,17 +115,33 @@ class Notificator extends Component implements NotificatorInterface
      */
     public function queue(array $params = [])
     {
-        return $this->adapter->queue($params);
+        return $this->notificationQueueRepository->queue($params);
     }
 
     public function getQueue(NotificationQueueId $id)
     {
-        return $this->adapter->get($id);
+        return $this->notificationQueueRepository->get($id);
     }
 
-    public function filterNotification(array $params = [])
+    public function addQueue(NotificationQueueInterface $notificationQueue)
     {
-        return $this->notificationRepository->filter($params);
+        return $this->notificationQueueRepository->add($notificationQueue);
+    }
+
+    public function updateQueue(NotificationQueueInterface $notificationQueue)
+    {
+        // TODO: Implement updateQueue() method.
+    }
+
+    public function deleteQueue(NotificationQueueInterface $notificationQueue)
+    {
+        // TODO: Implement deleteQueue() method.
+    }
+
+
+    public function types(array $params = [])
+    {
+        return $this->notificationTypeRepository->filter($params);
     }
 
     public function addType(NotificationTypeInterface $notificationType)
@@ -123,10 +154,18 @@ class Notificator extends Component implements NotificatorInterface
         return $this->notificationTypeRepository->remove($notificationType);
     }
 
-    public function filterNotificationType(array $params = [])
+    public function getType(NotificationTypeId $id)
     {
-        return $this->notificationTypeRepository->filter($params);
+        return $this->notificationTypeRepository->get($id);
     }
+
+    public function updateType(NotificationTypeInterface $notificationType)
+    {
+        return $this->notificationTypeRepository->update($notificationType);
+    }
+
+
+
 
     public function getChannel($channelClass)
     {
@@ -144,35 +183,14 @@ class Notificator extends Component implements NotificatorInterface
         return $this->handler->handle($event);
     }
 
-    public function update(NotificationInterface $notification)
+    public function read(NotificationQueueInterface $notification)
     {
-        return $this->notificationRepository->update($notification);
+        return $this->adapter->read($notification);
     }
 
-    public function delete(NotificationInterface $notification)
+    public function process($limit = null)
     {
-        return $this->notificationRepository->remove($notification);
+        //$this->adapter->process($limit? $limit: $this->limit);
     }
-
-    public function activate(NotificationInterface $notification)
-    {
-        // TODO: Implement activate() method.
-    }
-
-    public function deactivate(NotificationInterface $notification)
-    {
-        // TODO: Implement deactivate() method.
-    }
-
-    public function getType(NotificationTypeId $id)
-    {
-        return $this->notificationTypeRepository->get($id);
-    }
-
-    public function updateType(NotificationTypeInterface $notificationType)
-    {
-        return $this->notificationTypeRepository->update($notificationType);
-    }
-
 
 }

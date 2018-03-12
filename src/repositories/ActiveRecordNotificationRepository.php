@@ -21,18 +21,30 @@ class ActiveRecordNotificationRepository extends BaseNotificationRepository
 
     public function add(NotificationInterface $notification)
     {
+        if (!$notification instanceof ActiveRecord) {
+            throw new \InvalidArgumentException();
+        }
+
         /** @var ActiveRecord $notification */
         return $notification->save();
     }
 
     public function remove(NotificationInterface $notification)
     {
+        if (!$notification instanceof ActiveRecord) {
+            throw new \InvalidArgumentException();
+        }
+
         /** @var ActiveRecord $notification */
         return $notification->delete();
     }
 
     public function update(NotificationInterface $notification)
     {
+        if (!$notification instanceof ActiveRecord) {
+            throw new \InvalidArgumentException();
+        }
+
         /** @var ActiveRecord $notification */
         return $notification->update();
     }

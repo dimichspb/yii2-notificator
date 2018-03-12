@@ -28,7 +28,7 @@ class NotificationTypeController extends Controller
     public function actionIndex()
     {
         $searchFormModel = new NotificationTypeSearchForm();
-        $dataProvider = $this->notificator->filterNotificationType(\Yii::$app->request->queryParams);
+        $dataProvider = $this->notificator->types(\Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchFormModel,
