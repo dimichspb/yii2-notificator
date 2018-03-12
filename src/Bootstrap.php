@@ -1,7 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator;
 
-use dimichspb\yii\notificator\adapters\ActiveRecordNotificationQueueRepository;
+use dimichspb\yii\notificator\repositories\ActiveRecordNotificationQueueRepository;
 use dimichspb\yii\notificator\handlers\BasicNotificationEventHandler;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
