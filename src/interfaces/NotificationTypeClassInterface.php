@@ -13,6 +13,9 @@ interface NotificationTypeClassInterface
 
     public function getPermission();
 
+    /**
+     * @return array
+     */
     public function getEvents();
 
     public function getParams();
