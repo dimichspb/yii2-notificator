@@ -2,8 +2,8 @@
 namespace dimichspb\yii\notificator\controllers;
 
 
-use dimichspb\yii\notificator\forms\Notification\NotificationTypeCreateForm;
-use dimichspb\yii\notificator\forms\Notification\NotificationTypeSearchForm;
+use dimichspb\yii\notificator\forms\NotificationType\NotificationTypeCreateForm;
+use dimichspb\yii\notificator\forms\NotificationType\NotificationTypeSearchForm;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use yii\base\Module;
 use yii\filters\VerbFilter;

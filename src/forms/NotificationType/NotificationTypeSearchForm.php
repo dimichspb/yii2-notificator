@@ -1,5 +1,5 @@
 <?php
-namespace dimichspb\yii\notificator\forms\Notification;
+namespace dimichspb\yii\notificator\forms\NotificationType;
 
 use dimichspb\yii\notificator\models\Notification\Status;
 use yii\base\Model;
