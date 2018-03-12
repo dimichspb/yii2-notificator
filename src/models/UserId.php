@@ -14,7 +14,7 @@ class UserId
      */
     public function __construct($value)
     {
-        Assertion::notEmpty($value);
+        Assertion::nullOrNotEmpty($value);
 
         $this->value = $value;
     }
