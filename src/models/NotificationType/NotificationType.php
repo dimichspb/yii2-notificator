@@ -56,7 +56,9 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
         $this->created_at = new CreatedAt();
         $this->created_by = new CreatedBy($createdBy);
         $this->notification_type_class = new NotificationTypeClass($notificationTypeClass->getClass());
-        $this->events = $notificationTypeClass->getEvents();
+        foreach ($notificationTypeClass->getEvents() as $event) {
+            $this->events[] = new Event($event);
+        };
         $this->statuses[] = new Status(Status::STATUS_ACTIVE);
 
         parent::__construct($config);
