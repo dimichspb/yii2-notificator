@@ -28,16 +28,16 @@ class m000000_000030_create_notification_queue_table extends Migration
         ]);
         if ($this->db->driverName !== 'sqlite') {
             $this->addPrimaryKey('pk_notification_queue', $this->tableName, 'id');
+            $this->addForeignKey(
+                'fk_notification_queue_notification_id',
+                $this->tableName,
+                'notification_id',
+                '{{%notification%}}',
+                'id',
+                'RESTRICT',
+                'CASCADE'
+            );
         }
-        $this->addForeignKey(
-            'fk_notification_queue_notification_id',
-            $this->tableName,
-            'notification_id',
-            '{{%notification%}}',
-            'id',
-            'RESTRICT',
-            'CASCADE'
-        );
     }
 
     /**
