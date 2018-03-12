@@ -52,6 +52,16 @@ class Notification extends ActiveRecord implements NotificationInterface
      */
     protected $statuses;
 
+
+    public function __construct($createdBy = null, array $config = [])
+    {
+        $this->id = new Id();
+        $this->created_at = new CreatedAt();
+        $this->created_by = $createdBy;
+
+        parent::__construct($config);
+    }
+
     public function getId()
     {
         return $this->id;
