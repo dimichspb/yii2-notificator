@@ -1,5 +1,5 @@
 <?php
-namespace dimichspb\yii\notificator\adapters;
+namespace dimichspb\yii\notificator\repositories;
 
 use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\Id;
