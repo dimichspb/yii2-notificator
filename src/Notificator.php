@@ -11,6 +11,7 @@ use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\base\Component;
@@ -100,6 +101,11 @@ class Notificator extends Component implements NotificatorInterface
     public function queue(array $params = [])
     {
         return $this->adapter->queue($params);
+    }
+
+    public function getQueue(NotificationQueueId $id)
+    {
+        return $this->adapter->get($id);
     }
 
     public function filterNotification(array $params = [])

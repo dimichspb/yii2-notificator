@@ -1,8 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
-use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\NotificationQueue\Id;
 use yii\data\DataProviderInterface;
 
 interface NotificationQueueAdapterInterface
