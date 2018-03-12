@@ -12,10 +12,11 @@ class ActiveRecordNotificationRepository extends BaseNotificationRepository
     public $notificationClass = Notification::class;
     public $notificationSearchClass = NotificationSearch::class;
 
-    public function get(NotificationInterface $notification)
+    public function get(Id $id)
     {
-        /** @var ActiveRecord $notification */
-        return $notification::findOne($notification->getId());
+        /** @var ActiveRecord $notificationClass */
+        $notificationClass = $this->notificationClass;
+        return $notificationClass::findOne($id);
     }
 
     public function add(NotificationInterface $notification)

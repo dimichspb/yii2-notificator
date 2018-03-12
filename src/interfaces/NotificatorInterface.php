@@ -1,15 +1,26 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
-use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
+use dimichspb\yii\notificator\models\NotificationType\Id;
 use yii\base\Event;
 use yii\data\DataProviderInterface;
+use dimichspb\yii\notificator\models\Notification\Id as NotificationId;
+use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
+use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
 
 interface NotificatorInterface
 {
+    /**
+     * @param NotificationInterface $notification
+     * @return mixed
+     */
     public function add(NotificationInterface $notification);
 
-    public function get($userId, $limit = null);
+    public function get(NotificationId $id);
+
+    public function update(NotificationInterface $notification);
+
+    public function delete(NotificationInterface $notification);
 
     public function read(NotificationInterface $notification);
 
@@ -27,6 +38,8 @@ interface NotificatorInterface
      */
     public function queue(array $params = []);
 
+    public function getQueue(NotificationQueueId $id);
+
     /**
      * @param array $params
      * @return DataProviderInterface
@@ -38,6 +51,17 @@ interface NotificatorInterface
      * @return mixed
      */
     public function addType(NotificationTypeInterface $notificationType);
+    /**
+     * @param Id $id
+     * @return NotificationTypeInterface|null
+     */
+    public function getType(NotificationTypeId $id);
+
+    /**
+     * @param NotificationTypeInterface $notificationType
+     * @return mixed
+     */
+    public function updateType(NotificationTypeInterface $notificationType);
 
     /**
      * @param NotificationTypeInterface $notificationType

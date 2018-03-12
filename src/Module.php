@@ -18,8 +18,6 @@ class Module extends \yii\base\Module
 
         'types' => 'notification-type/index',
         'types/view' => 'notification-type/view',
-        'types/add' => 'notification-type/create',
-        'types/update' => 'notification-type/update',
 
         'queue' => 'notification-queue/index',
         'queue/view' => 'notification-queue/view',

@@ -2,13 +2,18 @@
 namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch;
+use dimichspb\yii\notificator\models\Notification\Id;
 use yii\data\DataProviderInterface;
 
 interface NotificationQueueAdapterInterface
 {
     public function add(NotificationInterface $notification);
 
-    public function get($user_id, $limit);
+    public function get(Id $id);
+
+    public function update(NotificationInterface $notification);
+
+    public function delete(NotificationInterface $notification);
 
     public function read(NotificationInterface $notification);
 

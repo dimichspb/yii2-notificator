@@ -13,10 +13,11 @@ class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeReposit
     public $notificationTypeClass = NotificationType::class;
     public $notificationTypeSearchClass = NotificationTypeSearch::class;
 
-    public function get(NotificationTypeInterface $notificationType)
+    public function get(Id $id)
     {
         /** @var ActiveRecord $notificationType */
-        return $notificationType::findOne($notificationType->getId());
+        $notificationType = $this->notificationTypeClass;
+        return $notificationType::findOne($id);
     }
 
     public function add(NotificationTypeInterface $notificationType)

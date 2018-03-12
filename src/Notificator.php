@@ -10,7 +10,9 @@ use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\models\Notification\Id;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
+use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\base\Component;
 use yii\base\Event;
 use yii\data\DataProviderInterface;
@@ -73,17 +75,17 @@ class Notificator extends Component implements NotificatorInterface
 
     public function add(NotificationInterface $notification)
     {
-        $this->adapter->add($notification);
+        return $this->adapter->add($notification);
     }
 
-    public function get($userId, $limit = null)
+    public function get(Id $id)
     {
-        return $this->adapter->get($userId, $limit? $limit: $this->limit);
+        return $this->adapter->get($id);
     }
 
     public function read(NotificationInterface $notification)
     {
-        $this->adapter->read($notification);
+        return $this->adapter->read($notification);
     }
 
     public function process($limit = null)
@@ -135,4 +137,36 @@ class Notificator extends Component implements NotificatorInterface
     {
         return $this->handler->handle($event);
     }
+
+    public function update(NotificationInterface $notification)
+    {
+        return $this->notificationRepository->update($notification);
+    }
+
+    public function delete(NotificationInterface $notification)
+    {
+        return $this->notificationRepository->remove($notification);
+    }
+
+    public function activate(NotificationInterface $notification)
+    {
+        // TODO: Implement activate() method.
+    }
+
+    public function deactivate(NotificationInterface $notification)
+    {
+        // TODO: Implement deactivate() method.
+    }
+
+    public function getType(NotificationTypeId $id)
+    {
+        return $this->notificationTypeRepository->get($id);
+    }
+
+    public function updateType(NotificationTypeInterface $notificationType)
+    {
+        return $this->notificationTypeRepository->update($notificationType);
+    }
+
+
 }

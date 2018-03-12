@@ -1,9 +1,11 @@
 <?php
 namespace dimichspb\yii\notificator\controllers;
 
+use dimichspb\yii\notificator\exceptions\NotificationNotFoundException;
 use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
 use dimichspb\yii\notificator\forms\Notification\NotificationSearchForm;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\models\Notification\Id;
 use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -60,6 +62,30 @@ class NotificationController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return \dimichspb\yii\notificator\interfaces\NotificationInterface|null
+     * @throws NotificationNotFoundException
+     * @throws \Assert\AssertionFailedException
+     */
+    protected function findModel($id)
+    {
+        if (!$model = $this->notificator->get(new Id($id))) {
+            throw new NotificationNotFoundException();
+        }
+
+        return $model;
     }
 
 }

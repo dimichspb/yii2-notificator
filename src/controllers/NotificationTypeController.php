@@ -2,9 +2,11 @@
 namespace dimichspb\yii\notificator\controllers;
 
 
+use dimichspb\yii\notificator\exceptions\NotificationTypeNotFoundException;
 use dimichspb\yii\notificator\forms\NotificationType\NotificationTypeCreateForm;
 use dimichspb\yii\notificator\forms\NotificationType\NotificationTypeSearchForm;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\models\NotificationType\Id;
 use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -23,21 +25,6 @@ class NotificationTypeController extends Controller
         parent::__construct($id, $module, $config);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     public function actionIndex()
     {
         $searchFormModel = new NotificationTypeSearchForm();
@@ -49,18 +36,27 @@ class NotificationTypeController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    public function actionView($id)
     {
-        $model = new NotificationTypeCreateForm();
+        $model = $this->findModel($id);
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-
-        }
-
-        return $this->render('create', [
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
 
+    /**
+     * @param $id
+     * @return \dimichspb\yii\notificator\interfaces\NotificationTypeInterface|null
+     * @throws NotificationTypeNotFoundException
+     * @throws \Assert\AssertionFailedException
+     */
+    protected function findModel($id)
+    {
+        if (!$model = $this->notificator->getType(new Id($id))) {
+            throw new NotificationTypeNotFoundException();
+        }
+
+        return $model;
+    }
 }
