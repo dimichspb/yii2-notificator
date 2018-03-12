@@ -1,8 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationType\search;
 
-use dimichspb\yii\notificator\models\Notification\Status;
-use dimichspb\yii\notificator\models\Notification\Notification;
+use dimichspb\yii\notificator\models\NotificationType\NotificationType;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -25,7 +24,7 @@ class NotificationTypeSearch extends Model
      */
     public function search($params)
     {
-        $query = Notification::find();
+        $query = NotificationType::find();
 
         // add conditions that should always apply here
 

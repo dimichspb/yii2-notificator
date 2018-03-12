@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="blog-index">
     <div class="box">
-        <div class="box-header">
-            <p><?= Html::a(\Yii::t('notificator', 'Create Notification Type'), ['create'], ['class' => 'btn btn-success']) ?></p>
-        </div>
         <div class="box-body">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -24,15 +21,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => ['class' => 'table-responsive'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'id',
                     'created_at:datetime',
                     'notification_type_class',
-                    'events',
+                    'name',
+                    'description',
+                    [
+                        'attribute' => 'events',
+                        'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
+                            return array_column($notificationType->getEvents(), 'value');
+                        },
+                    ],
                     'params',
-                    'statuses',
+                    [
+                        'attribute' => 'status',
+                        'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
+                            return $notificationType->getStatus();
+                        },
+                    ],
                     [
                         'class' => 'yii\grid\ActionColumn',
-                        'template' => '{view} {delete}'
+                        'template' => '{view}'
                     ],
                 ],
             ]); ?>

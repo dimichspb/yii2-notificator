@@ -29,4 +29,8 @@ interface NotificationTypeInterface
      * @return NotificationTypeClass
      */
     public function getNotificationTypeClass();
+
+    public function getName();
+    public function getDescription();
+    public function getStatus();
 }

@@ -108,6 +108,22 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
         return $this->notification_type_class;
     }
 
+    public function getName()
+    {
+        /** @var NotificationTypeClassInterface $notificationTypeClass */
+        $notificationTypeClass = new $this->notification_type_class;
+
+        return $notificationTypeClass->getName();
+    }
+
+    public function getDescription()
+    {
+        /** @var NotificationTypeClassInterface $notificationTypeClass */
+        $notificationTypeClass = new $this->notification_type_class;
+
+        return $notificationTypeClass->getDescription();
+    }
+
     public function getEvents()
     {
         return $this->events;
@@ -164,6 +180,11 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
         $this->recordEvent(new StatusAddedEvent());
 
         return $this;
+    }
+
+    public function getStatus()
+    {
+        return $this->getLastStatus();
     }
 
     public function getLastStatus()
