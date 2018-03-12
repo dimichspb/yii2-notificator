@@ -1,19 +1,30 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
+use dimichspb\yii\notificator\models\NotificationType\Event;
+use dimichspb\yii\notificator\models\NotificationType\Id;
+use dimichspb\yii\notificator\models\NotificationType\NotificationTypeClass;
+use dimichspb\yii\notificator\models\NotificationType\Param;
+
 interface NotificationTypeInterface
 {
-    public function getName();
+    /**
+     * @return Id
+     */
+    public function getId();
 
-    public function getDescription();
-
-    public function getView();
-
-    public function getPermission();
-
+    /**
+     * @return Event[]
+     */
     public function getEvents();
 
+    /**
+     * @return Param[]
+     */
     public function getParams();
 
-    public function setParams($data);
+    /**
+     * @return NotificationTypeClass
+     */
+    public function getNotificationTypeClass();
 }

@@ -27,7 +27,13 @@ interface NotificatorInterface
      * @param array $params
      * @return DataProviderInterface
      */
-    public function filter(array $params = []);
+    public function filterNotification(array $params = []);
+
+    /**
+     * @param array $params
+     * @return DataProviderInterface
+     */
+    public function filterNotificationType(array $params = []);
 
     public function handle(Event $event);
 }

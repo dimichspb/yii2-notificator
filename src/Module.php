@@ -10,14 +10,20 @@ class Module extends \yii\base\Module
     public $routes = [
         '/' => 'notification/index',
         'create' => 'notification/create',
-        'queue' => 'notification-queue/index',
-        'view' => 'notification-queue/view',
-        'drop' => 'notification-queue/delete',
-        'details' => 'notification/view',
+        'view' => 'notification/view',
         'update' => 'notification/update',
         'delete' => 'notification/delete',
         'activate' => 'notification/activate',
-        'deactivate' => 'notification/deactivate'
+        'deactivate' => 'notification/deactivate',
+
+        'types' => 'notification-type/index',
+        'types/view' => 'notification-type/view',
+        'types/add' => 'notification-type/create',
+        'types/update' => 'notification-type/update',
+
+        'queue' => 'notification-queue/index',
+        'queue/view' => 'notification-queue/view',
+        'queue/delete' => 'notification-queue/delete',
     ];
 
     public function init()

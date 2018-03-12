@@ -31,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'attempts',
                     'statuses',
+                    'sent_at:datetime',
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{view} {delete}'
                     ],
-                    'sent_at:datetime'
                 ],
             ]); ?>
         </div>

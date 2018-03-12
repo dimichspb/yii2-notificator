@@ -2,15 +2,20 @@
 namespace dimichspb\yii\notificator\models\NotificationType;
 
 use dimichspb\yii\notificator\EventTrait;
+use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedByUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\EventAddedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\EventRemovedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\EventsUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\NotificationTypeClassUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\ParamsUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\StatusAddedEvent;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
-class NotificationType extends ActiveRecord
+class NotificationType extends ActiveRecord implements NotificationTypeInterface
 {
     use EventTrait, InstantiateTrait;
 
@@ -87,11 +92,57 @@ class NotificationType extends ActiveRecord
         return $this->notification_type_class;
     }
 
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event)
+    {
+        $this->events[] = $event;
+        $this->recordEvent(new EventAddedEvent());
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event)
+    {
+        $this->events = array_filter($this->events, function (Event $item) use ($event) {
+            return !$item->isEqualTo($event);
+        });
+        $this->recordEvent(new EventRemovedEvent());
+
+        return $this;
+    }
+
+    public function updateEvents(array $events)
+    {
+        $this->events = $events;
+        $this->recordEvent(new EventsUpdatedEvent());
+
+        return $this;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+        $this->recordEvent(new ParamsUpdatedEvent());
+
+        return $this;
+    }
+
     public function addStatus(Status $status)
     {
         $this->statuses[] = $status;
         $this->save();
         $this->recordEvent(new StatusAddedEvent());
+
+        return $this;
     }
 
     public function getLastStatus()

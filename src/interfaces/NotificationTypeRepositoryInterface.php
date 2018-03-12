@@ -1,15 +1,15 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
-use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\NotificationType\Id;
 use yii\data\DataProviderInterface;
 
-interface NotificationRepositoryInterface
+interface NotificationTypeRepositoryInterface
 {
     public function get(Id $id);
-    public function add(NotificationInterface $notification);
+    public function add(NotificationTypeInterface $notificationType);
     public function remove(Id $id);
-    public function update(NotificationInterface $notification);
+    public function update(NotificationTypeInterface $notificationType);
     /**
      * @param array $params
      * @return DataProviderInterface

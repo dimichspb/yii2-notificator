@@ -1,0 +1,7 @@
+<?php
+namespace dimichspb\yii\notificator\models\NotificationType\events;
+
+class ParamsUpdatedEvent
+{
+
+}

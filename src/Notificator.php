@@ -7,6 +7,7 @@ use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueAdapterInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue;
 use yii\base\Component;
@@ -32,7 +33,12 @@ class Notificator extends Component implements NotificatorInterface
     /**
      * @var NotificationRepositoryInterface
      */
-    public $repository;
+    public $notificationRepository;
+
+    /**
+     * @var NotificationTypeRepositoryInterface
+     */
+    public $notificationTypeRepository;
 
     /**
      * @var NotificationEventHandlerInterface
@@ -50,12 +56,15 @@ class Notificator extends Component implements NotificatorInterface
     protected $container;
 
     public function __construct(Container $container, NotificationQueueAdapterInterface $adapter,
-                                NotificationRepositoryInterface $repository, NotificationEventHandlerInterface $handler,
+                                NotificationRepositoryInterface $notificationRepository,
+                                NotificationTypeRepositoryInterface $notificationTypeRepository,
+                                NotificationEventHandlerInterface $handler,
                                 array $config = [])
     {
         $this->container = $container;
         $this->adapter = $adapter;
-        $this->repository = $repository;
+        $this->notificationRepository = $notificationRepository;
+        $this->notificationTypeRepository = $notificationTypeRepository;
         $this->handler = $handler;
 
         parent::__construct($config);
@@ -90,9 +99,14 @@ class Notificator extends Component implements NotificatorInterface
         return $this->adapter->queue($params);
     }
 
-    public function filter(array $params = [])
+    public function filterNotification(array $params = [])
     {
-        return $this->repository->filter($params);
+        return $this->notificationRepository->filter($params);
+    }
+
+    public function filterNotificationType(array $params = [])
+    {
+        return $this->notificationTypeRepository->filter($params);
     }
 
     public function getChannel($channelClass)
