@@ -4,7 +4,7 @@ namespace dimichspb\yii\notificator\forms\Notification;
 use dimichspb\yii\notificator\models\Notification\Status;
 use yii\base\Model;
 
-class NotificationSearchForm extends Model
+class NotificationTypeSearchForm extends Model
 {
     public $id;
     public $created_at_from;

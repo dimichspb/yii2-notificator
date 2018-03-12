@@ -9,7 +9,7 @@ use yii\base\Module;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class NotificationController extends Controller
+class NotificationTypeController extends Controller
 {
     /**
      * @var NotificatorInterface

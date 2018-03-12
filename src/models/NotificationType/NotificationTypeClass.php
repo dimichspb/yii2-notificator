@@ -1,5 +1,5 @@
 <?php
-namespace dimichspb\yii\notificator\models\Notification;
+namespace dimichspb\yii\notificator\models\NotificationType;
 
 use Assert\Assertion;
 

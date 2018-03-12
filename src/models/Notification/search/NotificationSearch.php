@@ -14,6 +14,7 @@ class NotificationSearch extends Model
     public $created_by;
     public $user_id;
     public $channel_class;
+    public $notification_type_id;
     public $statuses;
 
     /**
@@ -56,6 +57,8 @@ class NotificationSearch extends Model
         ]);
 
         $query->andFilterWhere(['like', 'channel_class', $this->channel_class]);
+
+        $query->andFilterWhere(['in', 'notification_type_id', $this->notification_type_id]);
 
         return $dataProvider;
     }

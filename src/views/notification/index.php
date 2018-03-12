@@ -6,13 +6,16 @@ use yii\helpers\Html;
 
 /** @var $this \yii\web\View */
 /** @var $dataProvider \yii\data\ActiveDataProvider */
-/** @var $searchModel \dimichspb\yii\mailqueue\models\MailQueue\search\NotificationSearch */
+/** @var $searchModel \dimichspb\yii\notificator\models\Notification\search\NotificationSearch */
 
 $this->title = \Yii::t('notificator', 'Notifications');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="blog-index">
     <div class="box">
+        <div class="box-header">
+            <p><?= Html::a(\Yii::t('notificator', 'Create Notification'), ['create'], ['class' => 'btn btn-success']) ?></p>
+        </div>
         <div class="box-body">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,

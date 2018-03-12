@@ -9,6 +9,7 @@ class Module extends \yii\base\Module
 
     public $routes = [
         '/' => 'notification/index',
+        'create' => 'notification/create',
         'queue' => 'notification-queue/index',
         'view' => 'notification-queue/view',
         'drop' => 'notification-queue/delete',

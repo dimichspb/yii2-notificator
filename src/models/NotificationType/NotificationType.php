@@ -1,19 +1,16 @@
 <?php
-namespace dimichspb\yii\notificator\models\Notification;
+namespace dimichspb\yii\notificator\models\NotificationType;
 
 use dimichspb\yii\notificator\EventTrait;
-use dimichspb\yii\notificator\interfaces\MessageInterface;
-use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\models\InstantiateTrait;
-use dimichspb\yii\notificator\models\Notification\events\CreatedAtUpdatedEvent;
-use dimichspb\yii\notificator\models\Notification\events\CreatedByUpdatedEvent;
-use dimichspb\yii\notificator\models\Notification\events\StatusAddedEvent;
-use dimichspb\yii\notificator\models\Notification\events\ChannelClassUpdatedEvent;
-use dimichspb\yii\notificator\models\Notification\events\NotificationTypeIdUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\CreatedAtUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\CreatedByUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\NotificationTypeClassUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationType\events\StatusAddedEvent;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
-class Notification extends ActiveRecord implements NotificationInterface
+class NotificationType extends ActiveRecord
 {
     use EventTrait, InstantiateTrait;
 
@@ -21,11 +18,6 @@ class Notification extends ActiveRecord implements NotificationInterface
      * @var Id
      */
     protected $id;
-
-    /**
-     * @var UserId
-     */
-    protected $user_id;
 
     /**
      * @var CreatedAt
@@ -38,14 +30,13 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected $created_by;
 
     /**
-     * @var ChannelClass
+     * @var NotificationTypeClass
      */
-    protected $channel_class;
+    protected $notification_type_class;
 
-    /**
-     * @var \dimichspb\yii\notificator\models\NotificationType\Id
-     */
-    protected $notification_type_id;
+
+    protected $events;
+    protected $params;
 
     /**
      * @var Status[]
@@ -55,18 +46,6 @@ class Notification extends ActiveRecord implements NotificationInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    protected function setUserId($userId)
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
-    public function getUserId()
-    {
-        return $this->user_id;
     }
 
     protected function setCreatedAt(CreatedAt $createdAt)
@@ -95,30 +74,17 @@ class Notification extends ActiveRecord implements NotificationInterface
         return $this->created_by;
     }
 
-    protected function setChannelClass(ChannelClass $channelClass)
+    protected function setNotificationTypeClass(NotificationTypeClass $notificationTypeClass)
     {
-        $this->channel_class = $channelClass;
-        $this->recordEvent(new ChannelClassUpdatedEvent());
-
-        return $this->channel_class;
-    }
-
-    public function getChannelClass()
-    {
-        return $this->channel_class;
-    }
-
-    protected function setNotificationTypeId(\dimichspb\yii\notificator\models\NotificationType\Id $notificationTypeId)
-    {
-        $this->notification_type_id = $notificationTypeId;
-        $this->recordEvent(new NotificationTypeIdUpdatedEvent());
+        $this->notification_type_class = $notificationTypeClass;
+        $this->recordEvent(new NotificationTypeClassUpdatedEvent());
 
         return $this;
     }
 
-    public function getNotificationTypeId()
+    public function getNotificationTypeClass()
     {
-        return $this->notification_type_id;
+        return $this->notification_type_class;
     }
 
     public function addStatus(Status $status)
@@ -133,17 +99,12 @@ class Notification extends ActiveRecord implements NotificationInterface
         return end($this->statuses);
     }
 
-    public function getMessage()
-    {
-
-    }
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%notification%}}';
+        return '{{%notification_type%}}';
     }
 
     /**
@@ -154,21 +115,26 @@ class Notification extends ActiveRecord implements NotificationInterface
         $this->id = new Id(
             $this->getAttribute('id')
         );
-        $this->user_id = new UserId(
-            $this->getAttribute('user_id')
-        );
         $this->created_at = new CreatedAt(
             $this->getAttribute('created_at')
         );
         $this->created_by = new CreatedBy(
             $this->getAttribute('created_by')
         );
-        $this->channel_class = new ChannelClass(
-            $this->getAttribute('channel_class')
+        $this->notification_type_class = new NotificationTypeClass(
+            $this->getAttribute('notification_type_class')
         );
-        $this->notification_type_id = new \dimichspb\yii\notificator\models\NotificationType\Id(
-            $this->getAttribute('notification_type_id')
-        );
+        $this->events = array_map(function ($row) {
+            return new Event(
+                $row['value']
+            );
+        }, Json::decode($this->getAttribute('events')));
+        $this->params = array_map(function ($row) {
+            return new Param(
+                $row['name'],
+                $row['value']
+            );
+        }, Json::decode($this->getAttribute('params')));
         $this->statuses = array_map(function ($row) {
             return new Status(
                 $row['value'],
@@ -184,8 +150,18 @@ class Notification extends ActiveRecord implements NotificationInterface
         $this->setAttribute('id', $this->id->getValue());
         $this->setAttribute('created_at', $this->created_at->getValue());
         $this->setAttribute('created_by', $this->created_by->getValue());
-        $this->setAttribute('channel_class', $this->channel_class->getValue());
-        $this->setAttribute('notification_type_id', $this->notification_type_id->getValue());
+        $this->setAttribute('notification_type_class', $this->notification_type_class->getValue());
+        $this->setAttribute('events', Json::encode(array_map(function (Event $event) {
+            return [
+                'value' => $event->getValue(),
+            ];
+        }, $this->events)));
+        $this->setAttribute('params', Json::encode(array_map(function (Param $param) {
+            return [
+                'name' => $param->getName(),
+                'value' => $param->getValue(),
+            ];
+        }, $this->params)));
         $this->setAttribute('statuses', Json::encode(array_map(function (Status $status) {
             return [
                 'value' => $status->getValue(),
@@ -195,5 +171,4 @@ class Notification extends ActiveRecord implements NotificationInterface
 
         return parent::beforeSave($insert);
     }
-
 }

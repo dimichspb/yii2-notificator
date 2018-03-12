@@ -7,6 +7,6 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
 {
     public function handle(Event $event)
     {
-        var_dump($event);
+        var_dump($event->sender);
     }
 }
