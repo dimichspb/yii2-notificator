@@ -77,11 +77,15 @@ class NotificationController extends Controller
         $model = new NotificationCreateForm(
             $this->getAvailableUsers(),
             $this->getAvailableRoles(),
-            $this->getAvailableTypes()
+            $this->getAvailableTypes(),
+            $this->getAvailableChannels()
         );
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            $notification = $this->notificator->createNotification($model);
+            $this->notificator->addNotification($notification);
+
+            return $this->redirect(['view', 'id' => $notification->getId()]);
 
         }
 
@@ -116,16 +120,21 @@ class NotificationController extends Controller
 
     protected function getAvailableUsers()
     {
-        return $this->userService->findAll([]);
+        return $this->userService->findAll();
     }
 
     protected function getAvailableRoles()
     {
-        return $this->roleService->findAll([]);
+        return $this->roleService->findAll();
     }
 
     protected function getAvailableTypes()
     {
-        return $this->notificator->types([])->getModels();
+        return $this->notificator->types()->getModels();
+    }
+
+    protected function getAvailableChannels()
+    {
+        return $this->notificator->getChannels();
     }
 }

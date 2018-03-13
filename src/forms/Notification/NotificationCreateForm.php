@@ -1,6 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\forms\Notification;
 
+use dimichspb\yii\notificator\interfaces\ChannelInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use yii\base\Model;
 use yii\rbac\Role;
@@ -9,6 +10,7 @@ use yii\web\IdentityInterface;
 class NotificationCreateForm extends Model
 {
     public $notification_type_id;
+    public $channel_class;
     public $users;
     public $roles;
     public $ignored_users = [];
@@ -17,16 +19,19 @@ class NotificationCreateForm extends Model
     protected $available_users = [];
     protected $available_roles = [];
     protected $available_types = [];
+    protected $available_channels = [];
 
     public function __construct(
         array $availableUsers = [],
         array $availableRoles = [],
         array $availableTypes = [],
+        array $availableChannels = [],
         array $config = []
     ) {
         $this->available_users = $availableUsers;
         $this->available_roles = $availableRoles;
         $this->available_types = $availableTypes;
+        $this->available_channels = $availableChannels;
 
         parent::__construct($config);
     }
@@ -34,7 +39,7 @@ class NotificationCreateForm extends Model
     public function rules()
     {
         return [
-            [['notification_type_id'], 'required'],
+            [['notification_type_id', 'channel_class',], 'required'],
             [
                 'roles',
                 'required',
@@ -45,6 +50,8 @@ class NotificationCreateForm extends Model
                     return $('#user_id').val() == null;
                 }"
             ],
+            ['notification_type_id', 'in', 'range' => $this->available_types],
+            ['channel_class', 'in', 'range' => $this->available_channels],
             [['users', 'ignored_users'], 'each', 'rule' => ['in', 'range' => $this->available_users]],
             [['roles', 'ignored_roles'], 'each', 'rule' => ['in', 'range' => $this->available_roles]],
         ];
@@ -72,5 +79,13 @@ class NotificationCreateForm extends Model
     public function getAvailableTypes()
     {
         return $this->available_types;
+    }
+
+    /**
+     * @return ChannelInterface[]
+     */
+    public function getAvailableChannels()
+    {
+        return $this->available_channels;
     }
 }

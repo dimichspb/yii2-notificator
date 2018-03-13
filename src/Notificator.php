@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator;
 
 use dimichspb\yii\notificator\channels\MailChannel;
+use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
@@ -11,6 +12,7 @@ use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\Notification\Id as NotificationId;
+use dimichspb\yii\notificator\models\Notification\Notification;
 use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\base\Component;
@@ -19,6 +21,7 @@ use yii\data\DataProviderInterface;
 use yii\db\ActiveRecord;
 use yii\di\Container;
 use yii\rbac\ManagerInterface;
+use yii\web\User;
 
 class Notificator extends Component implements NotificatorInterface
 {
@@ -43,18 +46,22 @@ class Notificator extends Component implements NotificatorInterface
      */
     public $notificationTypeRepository;
 
+    public $channels = [
+        'mail' => [
+            'class' => MailChannel::class,
+        ],
+    ];
+    /**
+     * @var User
+     */
+    protected $userComponent;
+
     /**
      * @var NotificationEventHandlerInterface
      */
     public $handler;
 
     public $limit = 10;
-
-    public $channels = [
-        'mail' => [
-            'class' => MailChannel::class
-        ],
-    ];
 
     protected $container;
 
@@ -70,6 +77,7 @@ class Notificator extends Component implements NotificatorInterface
         $this->notificationRepository = $notificationRepository;
         $this->notificationTypeRepository = $notificationTypeRepository;
         $this->handler = $handler;
+        $this->userComponent = \Yii::$app->user;
 
         parent::__construct($config);
     }
@@ -82,6 +90,12 @@ class Notificator extends Component implements NotificatorInterface
     public function addNotification(NotificationInterface $notification)
     {
         return $this->notificationRepository->add($notification);
+    }
+
+    public function createNotification(NotificationCreateForm $notificationCreateForm)
+    {
+        $notification = new Notification($this->userComponent->getIdentity()->getId());
+        $notification->
     }
 
     public function getNotification(NotificationId $id)
@@ -164,8 +178,10 @@ class Notificator extends Component implements NotificatorInterface
         return $this->notificationTypeRepository->update($notificationType);
     }
 
-
-
+    public function getChannels(array $params = [])
+    {
+        return $this->channels;
+    }
 
     public function getChannel($channelClass)
     {
@@ -185,7 +201,7 @@ class Notificator extends Component implements NotificatorInterface
 
     public function read(NotificationQueueInterface $notification)
     {
-        return $this->adapter->read($notification);
+        return $this->notificationQueueRepository->read($notification);
     }
 
     public function process($limit = null)

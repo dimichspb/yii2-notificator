@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'notification_type_id')->widget(Select2::class, [
-        'data' => $model->getAvailableTypes(),
+        'data' => ArrayHelper::map($model->getAvailableTypes(), 'id', 'name'),
         'options' => ['placeholder' => 'Select notification type ...'],
         'pluginOptions' => [
             'allowClear' => false
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'users')->widget(Select2::class, [
-        'data' => $model->getAvailableUsers(),
+        'data' => ArrayHelper::map($model->getAvailableUsers(), 'id', 'username'),
         'options' => [
             'placeholder' => 'Select subscribed users ...',
             'multiple' => true
@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'roles')->widget(Select2::class, [
-        'data' => $model->getAvailableRoles(),
+        'data' => ArrayHelper::map($model->getAvailableRoles(), 'name', 'description'),
         'options' => [
             'placeholder' => 'Select subscribed roles ...',
             'multiple' => true
@@ -44,7 +44,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'ignored_users')->widget(Select2::class, [
-        'data' => $model->getAvailableUsers(),
+        'data' => ArrayHelper::map($model->getAvailableUsers(), 'id', 'username'),
         'options' => [
             'placeholder' => 'Select ignored users ...',
             'multiple' => true
@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'ignored_roles')->widget(Select2::class, [
-        'data' => $model->getAvailableRoles(),
+        'data' => ArrayHelper::map($model->getAvailableRoles(), 'name', 'description'),
         'options' => [
             'placeholder' => 'Select ignored roles ...',
             'multiple' => true

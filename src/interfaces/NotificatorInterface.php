@@ -1,6 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
+use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
 use dimichspb\yii\notificator\models\NotificationType\Id;
 use yii\base\Event;
 use yii\data\DataProviderInterface;
@@ -21,6 +22,11 @@ interface NotificatorInterface
      */
     public function addNotification(NotificationInterface $notification);
 
+    /**
+     * @param NotificationCreateForm $notificationCreateForm
+     * @return NotificationInterface
+     */
+    public function createNotification(NotificationCreateForm $notificationCreateForm);
     /**
      * @param NotificationId $id
      * @return NotificationInterface
@@ -114,9 +120,11 @@ interface NotificatorInterface
     public function deleteType(NotificationTypeInterface $notificationType);
 
 
-    public function handle(Event $event);
+    public function getChannels(array $params = []);
 
     public function getChannel($channelClass);
+
+    public function handle(Event $event);
 
     public function process($limit = null);
 
