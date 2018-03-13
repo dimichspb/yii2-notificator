@@ -19,9 +19,9 @@ class ActiveRecordUserService extends BaseUserService
      */
     protected $identityClass;
 
-    public function __construct(User $userComponent, array $config = [])
+    public function __construct(array $config = [])
     {
-        $this->userComponent = $userComponent;
+        $this->userComponent = \Yii::$app->user;
         $this->identityClass = $this->userComponent->identityClass;
 
         $identity = new $this->identityClass;

@@ -126,6 +126,6 @@ class NotificationController extends Controller
 
     protected function getAvailableTypes()
     {
-        return $this->notificator->types([]);
+        return $this->notificator->types([])->getModels();
     }
 }

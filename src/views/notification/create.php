@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="notification-create">
     <div class="box">
         <div class="box-body">
-            <?= $this->render('_create_form', [
+            <?= $this->render('_create-form', [
                 'model' => $model,
             ]) ?>
         </div>

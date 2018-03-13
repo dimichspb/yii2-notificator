@@ -14,6 +14,7 @@ use dimichspb\yii\notificator\repositories\ActiveRecordNotificationRepository;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationTypeRepository;
 use dimichspb\yii\notificator\services\ActiveRecordUserService;
 use dimichspb\yii\notificator\services\AuthManagerRoleService;
+use dimichspb\yii\notificator\services\EmptyUserService;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\di\Container;
@@ -36,7 +37,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
             NotificationRepositoryInterface::class => ActiveRecordNotificationRepository::class,
             NotificationTypeRepositoryInterface::class => ActiveRecordNotificationTypeRepository::class,
             NotificationEventHandlerInterface::class => BasicNotificationEventHandler::class,
-            UserServiceInterface::class => ActiveRecordUserService::class,
+            UserServiceInterface::class => EmptyUserService::class,
             RoleServiceInterface::class => AuthManagerRoleService::class,
         ]);
 

@@ -1,4 +1,6 @@
 <?php
+
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
@@ -11,15 +13,57 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'notification_type_id')->dropDownList(ArrayHelper::map($model->getAvailableTypes(), 'id', 'name'), ['prompt' => \Yii::t('notificator', 'Choose notification type...')]) ?>
+    <?= $form->field($model, 'notification_type_id')->widget(Select2::class, [
+        'data' => $model->getAvailableTypes(),
+        'options' => ['placeholder' => 'Select notification type ...'],
+        'pluginOptions' => [
+            'allowClear' => false
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'users')->dropDownList(ArrayHelper::map($model->getAvailableUsers(), 'id', 'name'), ['prompt' => \Yii::t('notificator', 'Choose subscribed users...')]) ?>
+    <?= $form->field($model, 'users')->widget(Select2::class, [
+        'data' => $model->getAvailableUsers(),
+        'options' => [
+            'placeholder' => 'Select subscribed users ...',
+            'multiple' => true
+        ],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'roles')->dropDownList(ArrayHelper::map($model->getAvailableRoles(), 'id', 'name'), ['prompt' => \Yii::t('notificator', 'Choose subscribed roles...')]) ?>
+    <?= $form->field($model, 'roles')->widget(Select2::class, [
+        'data' => $model->getAvailableRoles(),
+        'options' => [
+            'placeholder' => 'Select subscribed roles ...',
+            'multiple' => true
+        ],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'ignored_users')->dropDownList(ArrayHelper::map($model->getAvailableUsers(), 'id', 'name'), ['prompt' => \Yii::t('notificator', 'Choose ignored users...')]) ?>
+    <?= $form->field($model, 'ignored_users')->widget(Select2::class, [
+        'data' => $model->getAvailableUsers(),
+        'options' => [
+            'placeholder' => 'Select ignored users ...',
+            'multiple' => true
+        ],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'ignored_roles')->dropDownList(ArrayHelper::map($model->getAvailableRoles(), 'id', 'name'), ['prompt' => \Yii::t('notificator', 'Choose ignored roles...')]) ?>
+    <?= $form->field($model, 'ignored_roles')->widget(Select2::class, [
+        'data' => $model->getAvailableRoles(),
+        'options' => [
+            'placeholder' => 'Select ignored roles ...',
+            'multiple' => true
+        ],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <div class="form-group">
         <?= \yii\helpers\Html::submitButton(\Yii::t('notificator', 'Save'), ['class' => 'btn btn-success']) ?>
