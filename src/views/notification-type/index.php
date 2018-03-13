@@ -13,7 +13,7 @@ $this->title = \Yii::t('notificator', 'Notification Types');
 $this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['notification/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="blog-index">
+<div class="notification-type-index">
     <div class="box">
         <div class="box-body">
             <?= GridView::widget([

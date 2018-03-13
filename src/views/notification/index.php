@@ -11,7 +11,7 @@ use yii\helpers\Html;
 $this->title = \Yii::t('notificator', 'Notifications');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="blog-index">
+<div class="notification-index">
     <div class="box">
         <div class="box-header">
             <p><?= Html::a(\Yii::t('notificator', 'Create Notification'), ['create'], ['class' => 'btn btn-success']) ?></p>

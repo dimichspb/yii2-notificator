@@ -5,9 +5,13 @@ use dimichspb\yii\notificator\exceptions\NotificationNotFoundException;
 use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
 use dimichspb\yii\notificator\forms\Notification\NotificationSearchForm;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\interfaces\RoleServiceInterface;
+use dimichspb\yii\notificator\interfaces\TypeServiceInterface;
+use dimichspb\yii\notificator\interfaces\UserServiceInterface;
 use dimichspb\yii\notificator\models\Notification\Id;
 use yii\base\Module;
 use yii\filters\VerbFilter;
+use yii\rbac\ManagerInterface;
 use yii\web\Controller;
 
 class NotificationController extends Controller
@@ -17,9 +21,27 @@ class NotificationController extends Controller
      */
     protected $notificator;
 
-    public function __construct($id, Module $module, NotificatorInterface $notificator, array $config = [])
-    {
+    /**
+     * @var UserServiceInterface
+     */
+    protected $userService;
+
+    /**
+     * @var RoleServiceInterface
+     */
+    protected $roleService;
+
+    public function __construct(
+        $id,
+        Module $module,
+        NotificatorInterface $notificator,
+        UserServiceInterface $userService,
+        RoleServiceInterface $roleService,
+        array $config = []
+    ) {
         $this->notificator = $notificator;
+        $this->userService = $userService;
+        $this->roleService = $roleService;
 
         parent::__construct($id, $module, $config);
     }
@@ -52,7 +74,11 @@ class NotificationController extends Controller
 
     public function actionCreate()
     {
-        $model = new NotificationCreateForm();
+        $model = new NotificationCreateForm(
+            $this->getAvailableUsers(),
+            $this->getAvailableRoles(),
+            $this->getAvailableTypes()
+        );
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -88,4 +114,18 @@ class NotificationController extends Controller
         return $model;
     }
 
+    protected function getAvailableUsers()
+    {
+        return $this->userService->findAll([]);
+    }
+
+    protected function getAvailableRoles()
+    {
+        return $this->roleService->findAll([]);
+    }
+
+    protected function getAvailableTypes()
+    {
+        return $this->notificator->types([]);
+    }
 }

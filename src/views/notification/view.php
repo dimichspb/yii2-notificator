@@ -9,7 +9,7 @@ $this->title = \Yii::t('notificator', 'Notification') . ' - ' . $model->getId()-
 $this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="event-view">
+<div class="notification-view">
     <div class="box">
         <div class="box-body">
             <?= DetailView::widget([

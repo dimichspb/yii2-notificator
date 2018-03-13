@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator;
 
+use dimichspb\yii\notificator\interfaces\RoleServiceInterface;
+use dimichspb\yii\notificator\interfaces\UserServiceInterface;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationQueueRepository;
 use dimichspb\yii\notificator\handlers\BasicNotificationEventHandler;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
@@ -10,6 +12,8 @@ use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationRepository;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationTypeRepository;
+use dimichspb\yii\notificator\services\ActiveRecordUserService;
+use dimichspb\yii\notificator\services\AuthManagerRoleService;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\di\Container;
@@ -32,6 +36,8 @@ class Bootstrap implements \yii\base\BootstrapInterface
             NotificationRepositoryInterface::class => ActiveRecordNotificationRepository::class,
             NotificationTypeRepositoryInterface::class => ActiveRecordNotificationTypeRepository::class,
             NotificationEventHandlerInterface::class => BasicNotificationEventHandler::class,
+            UserServiceInterface::class => ActiveRecordUserService::class,
+            RoleServiceInterface::class => AuthManagerRoleService::class,
         ]);
 
         $notificator = $container->get(NotificatorInterface::class);
