@@ -11,8 +11,11 @@ use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
+use dimichspb\yii\notificator\models\Notification\ChannelClass;
 use dimichspb\yii\notificator\models\Notification\Id as NotificationId;
 use dimichspb\yii\notificator\models\Notification\Notification;
+use dimichspb\yii\notificator\models\Notification\RoleName;
+use dimichspb\yii\notificator\models\Notification\UserId;
 use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\base\Component;
@@ -94,8 +97,33 @@ class Notificator extends Component implements NotificatorInterface
 
     public function createNotification(NotificationCreateForm $notificationCreateForm)
     {
-        $notification = new Notification($this->userComponent->getIdentity()->getId());
-        $notification->
+        $notification = new Notification(
+            new NotificationTypeId($notificationCreateForm->notification_type_id),
+            new ChannelClass($notificationCreateForm->channel_class),
+            array_map(function ($row) {
+                return new UserId(
+                    $row['value']
+                );
+            }, $notificationCreateForm->users),
+            array_map(function ($row) {
+                return new RoleName(
+                    $row['value']
+                );
+            }, $notificationCreateForm->roles),
+            array_map(function ($row) {
+                return new UserId(
+                    $row['value']
+                );
+            }, $notificationCreateForm->ignored_users),
+            array_map(function ($row) {
+                return new RoleName(
+                    $row['value']
+                );
+            }, $notificationCreateForm->ignored_roles),
+            $this->userComponent->getIdentity()->getId()
+        );
+
+        return $notification;
     }
 
     public function getNotification(NotificationId $id)

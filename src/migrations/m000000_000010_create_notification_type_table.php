@@ -23,7 +23,7 @@ class m000000_000010_create_notification_type_table extends Migration
             'statuses' => $this->text(),
         ]);
         if ($this->db->driverName !== 'sqlite') {
-            
+
         }
     }
 
