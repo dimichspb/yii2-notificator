@@ -14,7 +14,7 @@ class m000000_000010_create_notification_type_table extends Migration
     public function up()
     {
         $this->createTable($this->tableName, [
-            'id' => 'char(36)',
+            'id' => 'char(36) PRIMARY KEY',
             'created_at' => $this->dateTime(),
             'created_by' => 'char(36)',
             'notification_type_class' => $this->string(255),
@@ -23,7 +23,7 @@ class m000000_000010_create_notification_type_table extends Migration
             'statuses' => $this->text(),
         ]);
         if ($this->db->driverName !== 'sqlite') {
-            $this->addPrimaryKey('pk_notification_type', $this->tableName, 'id');
+            //$this->addPrimaryKey('pk_notification_type', $this->tableName, 'id');
         }
     }
 

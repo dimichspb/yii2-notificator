@@ -3,10 +3,11 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model \dimichspb\yii\notificator\models\Notification\Notification */
+/* @var $model \dimichspb\yii\notificator\models\NotificationType\NotificationType */
 
-$this->title = \Yii::t('notificator', 'Notification') . ' - ' . $model->getId()->getValue();
-$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['index']];
+$this->title = \Yii::t('notificator', 'Notification Type') . ' - ' . $model->getId()->getValue();
+$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['notification/index']];
+$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notification Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="event-view">
@@ -15,16 +16,22 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
-                    'user_id',
                     'created_at:datetime',
+                    'notification_type_class',
+                    'name',
+                    'description',
                     [
-                        'attribute' => 'message',
-                        'value' => $model->getMessage(),
+                        'attribute' => 'events',
+                        'value' => \yii\helpers\Json::encode($model->getEvents(), true),
                     ],
-                    'attempts',
-                    'statuses',
-                    'sent_at:datetime',
+                    [
+                        'attribute' => 'params',
+                        'value' => \yii\helpers\Json::encode($model->getParams(), true),
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'value' => $model->getStatus()->getValue(),
+                    ],
                 ],
             ]) ?>
         </div>

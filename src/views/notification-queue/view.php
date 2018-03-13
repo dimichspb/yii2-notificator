@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 /* @var $model \dimichspb\yii\notificator\models\NotificationQueue\NotificationQueue */
 
 $this->title = \Yii::t('notificator', 'Notification Queue') . ' - ' . $model->getId()->getValue();
+$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['notification/index']];
 $this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notification Queue'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

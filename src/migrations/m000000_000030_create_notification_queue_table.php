@@ -14,7 +14,7 @@ class m000000_000030_create_notification_queue_table extends Migration
     public function up()
     {
         $this->createTable($this->tableName, [
-            'id' => 'char(36)',
+            'id' => 'char(36) PRIMARY KEY',
             'created_at' => $this->dateTime(),
             'user_id' => 'char(36)',
             'notification_id' => 'char(36)',
@@ -27,7 +27,7 @@ class m000000_000030_create_notification_queue_table extends Migration
             'statuses' => $this->text(),
         ]);
         if ($this->db->driverName !== 'sqlite') {
-            $this->addPrimaryKey('pk_notification_queue', $this->tableName, 'id');
+            //$this->addPrimaryKey('pk_notification_queue', $this->tableName, 'id');
             $this->addForeignKey(
                 'fk_notification_queue_notification_id',
                 $this->tableName,

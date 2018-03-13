@@ -29,4 +29,9 @@ class Id
     {
         return $this->getValue() === $that->getValue();
     }
+
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 }

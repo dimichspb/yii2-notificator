@@ -10,6 +10,7 @@ use yii\helpers\Html;
 /** @var $searchModel \dimichspb\yii\notificator\models\NotificationType\search\NotificationTypeSearch */
 
 $this->title = \Yii::t('notificator', 'Notification Types');
+$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['notification/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="blog-index">
@@ -28,19 +29,40 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'events',
                         'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
-                            return array_column($notificationType->getEvents(), 'value');
+                            $events = [];
+                            foreach ($notificationType->getEvents() as $event) {
+                                $events[] = $event->getValue();
+                            }
+                            return \yii\helpers\Json::encode($events, true);
                         },
                     ],
-                    'params',
+                    [
+                        'attribute' => 'params',
+                        'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
+                            return \yii\helpers\Json::encode($notificationType->getParams(), true);
+                        },
+                    ],
                     [
                         'attribute' => 'status',
                         'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
-                            return $notificationType->getStatus();
+                            return $notificationType->getStatus()->getValue();
                         },
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
-                        'template' => '{view}'
+                        'template' => '{view}',
+                        /*'urlCreator' => function ($action, \dimichspb\yii\notificator\interfaces\NotificationTypeInterface $model) {
+                            $url = '';
+                            switch ($action) {
+                                case 'view':
+                                    //$url = ['view', 'id' => $model->getId()->getValue()];
+                                    $url = '123';
+                                    break;
+                                default:
+                                    break;
+                            };
+                            return $url;
+                        }*/
                     ],
                 ],
             ]); ?>

@@ -6,9 +6,10 @@ use yii\helpers\Html;
 
 /** @var $this \yii\web\View */
 /** @var $dataProvider \yii\data\ActiveDataProvider */
-/** @var $searchModel \dimichspb\yii\mailqueue\models\MailQueue\search\NotificationQueueSearch */
+/** @var $searchModel \dimichspb\yii\notificator\models\NotificationQueue\search\NotificationQueueSearch */
 
 $this->title = \Yii::t('notificator', 'Notification Queue');
+$this->params['breadcrumbs'][] = ['label' => \Yii::t('notificator', 'Notifications'), 'url' => ['notification/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="blog-index">

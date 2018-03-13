@@ -5,6 +5,7 @@ use dimichspb\yii\notificator\models\NotificationType\Event;
 use dimichspb\yii\notificator\models\NotificationType\Id;
 use dimichspb\yii\notificator\models\NotificationType\NotificationTypeClass;
 use dimichspb\yii\notificator\models\NotificationType\Param;
+use dimichspb\yii\notificator\models\NotificationType\Status;
 
 interface NotificationTypeInterface
 {
@@ -32,5 +33,9 @@ interface NotificationTypeInterface
 
     public function getName();
     public function getDescription();
+
+    /**
+     * @return Status
+     */
     public function getStatus();
 }

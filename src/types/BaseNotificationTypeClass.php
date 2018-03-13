@@ -7,6 +7,6 @@ abstract class BaseNotificationTypeClass implements NotificationTypeClassInterfa
 {
     public function getClass()
     {
-        return self::class;
+        return static::class;
     }
 }

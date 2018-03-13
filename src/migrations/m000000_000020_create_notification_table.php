@@ -14,7 +14,7 @@ class m000000_000020_create_notification_table extends Migration
     public function up()
     {
         $this->createTable($this->tableName, [
-            'id' => 'char(36)',
+            'id' => 'char(36) PRIMARY KEY',
             'created_at' => $this->dateTime(),
             'created_by' => 'char(36)',
             'user_id' => 'char(36)',
@@ -23,7 +23,7 @@ class m000000_000020_create_notification_table extends Migration
             'statuses' => $this->text(),
         ]);
         if ($this->db->driverName !== 'sqlite') {
-            $this->addPrimaryKey('pk_notification', $this->tableName, 'id');
+            //$this->addPrimaryKey('pk_notification', $this->tableName, 'id');
             $this->addForeignKey(
                 'fk_notification_notification_type_id',
                 $this->tableName,
