@@ -8,7 +8,7 @@ use yii\web\User;
 
 class ActiveRecordUserService extends BaseUserService
 {
-    public function __construct(Application $application, array $config = [])
+    public function __construct(array $config = [])
     {
         $identity = new ($this->getIdentityClass());
 
@@ -16,7 +16,7 @@ class ActiveRecordUserService extends BaseUserService
             throw new InvalidConfigException();
         }
 
-        parent::__construct($application, $config);
+        parent::__construct($config);
     }
 
     public function findAll(array $criteria = [])

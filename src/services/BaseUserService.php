@@ -15,10 +15,10 @@ abstract class BaseUserService extends BaseObject implements UserServiceInterfac
      */
     protected $userComponent;
 
-    public function __construct(Application $app, array $config = [])
+    public function __construct(array $config = [])
     {
-        if ($app instanceof WebApplication) {
-            $this->userComponent = $app->user;
+        if (\Yii::$app instanceof WebApplication) {
+            $this->userComponent = \Yii::$app->user;
         }
 
         parent::__construct($config);
