@@ -21,6 +21,14 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
+    <?= $form->field($model, 'channel_class')->widget(Select2::class, [
+        'data' => ArrayHelper::map($model->getAvailableChannels(), 'class', 'class'),
+        'options' => ['placeholder' => 'Select channel ...'],
+        'pluginOptions' => [
+            'allowClear' => false
+        ],
+    ]); ?>
+
     <?= $form->field($model, 'users')->widget(Select2::class, [
         'data' => ArrayHelper::map($model->getAvailableUsers(), 'id', 'username'),
         'options' => [

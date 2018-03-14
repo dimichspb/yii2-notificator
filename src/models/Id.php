@@ -4,7 +4,7 @@ namespace dimichspb\yii\notificator\models;
 use Assert\Assertion;
 use Ramsey\Uuid\Uuid;
 
-class Id
+class Id extends BaseString
 {
     protected $value;
 
@@ -28,10 +28,5 @@ class Id
     public function isEqualTo(Id $that)
     {
         return $this->getValue() === $that->getValue();
-    }
-
-    public function __toString()
-    {
-        return $this->getValue();
     }
 }

@@ -5,5 +5,7 @@ interface ChannelInterface
 {
     public function className();
 
+    public function getName();
+
     public function send(MessageInterface $message);
 }

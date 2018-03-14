@@ -4,6 +4,7 @@ namespace dimichspb\yii\notificator\forms\Notification;
 use dimichspb\yii\notificator\interfaces\ChannelInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use yii\web\IdentityInterface;
 
@@ -44,16 +45,16 @@ class NotificationCreateForm extends Model
                 'roles',
                 'required',
                 'when' => function ($model) {
-                    return is_null($model->user_id);
+                    return is_null($model->users);
                 },
                 'whenClient' => "function (attribute, value) {
-                    return $('#user_id').val() == null;
+                    return $('#users').val() == null;
                 }"
             ],
-            ['notification_type_id', 'in', 'range' => $this->available_types],
-            ['channel_class', 'in', 'range' => $this->available_channels],
-            [['users', 'ignored_users'], 'each', 'rule' => ['in', 'range' => $this->available_users]],
-            [['roles', 'ignored_roles'], 'each', 'rule' => ['in', 'range' => $this->available_roles]],
+            ['notification_type_id', 'in', 'range' => ArrayHelper::getColumn($this->available_types, 'id')],
+            ['channel_class', 'in', 'range' => ArrayHelper::getColumn($this->available_channels, 'class')],
+            [['users', 'ignored_users'], 'each', 'rule' => ['in', 'range' => ArrayHelper::getColumn($this->available_users, 'id')]],
+            [['roles', 'ignored_roles'], 'each', 'rule' => ['in', 'range' => ArrayHelper::getColumn($this->available_roles, 'name')]],
         ];
     }
 

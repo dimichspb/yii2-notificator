@@ -1,5 +1,6 @@
 <?php
 
+use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\models\Notification\Notification;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -7,6 +8,8 @@ use yii\helpers\Html;
 /** @var $this \yii\web\View */
 /** @var $dataProvider \yii\data\ActiveDataProvider */
 /** @var $searchModel \dimichspb\yii\notificator\models\Notification\search\NotificationSearch */
+/** @var $notificator \dimichspb\yii\notificator\interfaces\NotificatorInterface */
+
 
 $this->title = \Yii::t('notificator', 'Notifications');
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,17 +26,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => ['class' => 'table-responsive'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'id',
+                    //'id',
                     'created_at:datetime',
-                    'user_id',
                     [
-                        'attribute' => 'message',
-                        'value' => function (Notification $model) {
-                            return $model->getMessage();
+                        'attribute' => 'notification_type_id',
+                        'value' => function (NotificationInterface $model) use ($notificator) {
+                            $notificationType = $notificator->getType($model->getNotificationTypeId());
+                            return $notificationType->getName();
                         },
                     ],
-                    'notification_type_id',
-                    'status',
+                    [
+                        'attribute' => 'channel_class',
+                        'value' => function (NotificationInterface $model) use ($notificator) {
+                            return $notificator->getChannel($model->getChannelClass())->getName();
+                        },
+                    ],
+                    'user_ids',
+                    'role_names',
+                    'ignored_user_ids',
+                    'ignored_role_names',
+                    [
+                        'attribute' => 'status',
+                        'value' => function (Notification $model) {
+                            return $model->getLastStatus()->getValue();
+                        },
+                    ],
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{view} {delete}'

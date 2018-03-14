@@ -6,6 +6,8 @@ use yii\mail\MailerInterface;
 
 class MailChannel extends BaseChannel
 {
+    protected $name = 'E-mail channel';
+
     /** @var MailerInterface  */
     protected $mailer;
 

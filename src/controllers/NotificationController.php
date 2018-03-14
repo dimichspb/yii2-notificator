@@ -35,13 +35,11 @@ class NotificationController extends Controller
         $id,
         Module $module,
         NotificatorInterface $notificator,
-        UserServiceInterface $userService,
-        RoleServiceInterface $roleService,
         array $config = []
     ) {
         $this->notificator = $notificator;
-        $this->userService = $userService;
-        $this->roleService = $roleService;
+        $this->userService = $this->notificator->getUserService();
+        $this->roleService = $this->notificator->getRoleService();
 
         parent::__construct($id, $module, $config);
     }
@@ -82,8 +80,7 @@ class NotificationController extends Controller
         );
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $notification = $this->notificator->createNotification($model);
-            $this->notificator->addNotification($notification);
+            $notification = $this->saveNotification($model);
 
             return $this->redirect(['view', 'id' => $notification->getId()]);
 
@@ -100,6 +97,7 @@ class NotificationController extends Controller
 
         return $this->render('view', [
             'model' => $model,
+            'notificator' => $this->notificator,
         ]);
     }
 
@@ -136,5 +134,13 @@ class NotificationController extends Controller
     protected function getAvailableChannels()
     {
         return $this->notificator->getChannels();
+    }
+
+    protected function saveNotification(NotificationCreateForm $createForm)
+    {
+        $notification = $this->notificator->createNotification($createForm);
+        $this->notificator->addNotification($notification);
+
+        return $notification;
     }
 }

@@ -13,7 +13,13 @@ interface NotificationInterface
     /**
      * @return UserId
      */
-    public function getUserId();
+    public function getUserIds();
+
+    public function getRoleNames();
+
+    public function getIgnoredUserIds();
+
+    public function getIgnoredRoleNames();
     /**
      * @return MessageInterface
      */
@@ -22,4 +28,6 @@ interface NotificationInterface
      * @return string
      */
     public function getChannelClass();
+
+    public function getNotificationTypeId();
 }

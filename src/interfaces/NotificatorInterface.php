@@ -122,6 +122,10 @@ interface NotificatorInterface
 
     public function getChannels(array $params = []);
 
+    /**
+     * @param $channelClass
+     * @return ChannelInterface
+     */
     public function getChannel($channelClass);
 
     public function handle(Event $event);
@@ -129,4 +133,8 @@ interface NotificatorInterface
     public function process($limit = null);
 
     public function read(NotificationQueueInterface $notification);
+
+    public function getUserService();
+
+    public function getRoleService();
 }

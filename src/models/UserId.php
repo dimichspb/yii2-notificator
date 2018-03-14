@@ -3,7 +3,7 @@ namespace dimichspb\yii\notificator\models;
 
 use Assert\Assertion;
 
-class UserId
+class UserId extends BaseString
 {
     protected $value;
 

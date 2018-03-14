@@ -1,42 +1,28 @@
 <?php
 namespace dimichspb\yii\notificator\services;
 
+use yii\base\Application;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\web\User;
 
 class ActiveRecordUserService extends BaseUserService
 {
-    public $userClass = 'app\models\User';
-
-    /**
-     * @var mixed|\yii\web\User
-     */
-    protected $userComponent;
-
-    /**
-     * @var ActiveRecord
-     */
-    protected $identityClass;
-
-    public function __construct(array $config = [])
+    public function __construct(Application $application, array $config = [])
     {
-        $this->userComponent = \Yii::$app->user;
-        $this->identityClass = $this->userComponent->identityClass;
-
-        $identity = new $this->identityClass;
+        $identity = new ($this->getIdentityClass());
 
         if (!$identity instanceof ActiveRecord) {
             throw new InvalidConfigException();
         }
 
-        parent::__construct($config);
+        parent::__construct($application, $config);
     }
 
     public function findAll(array $criteria = [])
     {
         /** @var ActiveRecord $identityClass */
-        $identityClass = $this->identityClass;
+        $identityClass = $this->getIdentityClass();
 
         return $identityClass::findAll($criteria);
     }

@@ -15,9 +15,16 @@ use dimichspb\yii\notificator\models\Notification\events\ChannelClassUpdatedEven
 use dimichspb\yii\notificator\models\Notification\events\NotificationTypeIdUpdatedEvent;
 use dimichspb\yii\notificator\models\Notification\events\UserIdsUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
+use dimichspb\yii\notificator\models\NotificationType\NotificationType;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
+/**
+ * Class Notification
+ * @package dimichspb\yii\notificator\models\Notification
+ *
+ * @property NotificationType $notificationType
+ */
 class Notification extends ActiveRecord implements NotificationInterface
 {
     use EventTrait, InstantiateTrait;
@@ -116,7 +123,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     {
         return $this->notification_type_id;
     }
-    
+
     protected function setChannelClass(ChannelClass $channelClass)
     {
         $this->channel_class = $channelClass;

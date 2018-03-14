@@ -31,12 +31,6 @@ class Bootstrap implements \yii\base\BootstrapInterface
         /** @var Container $container */
         $container = \Yii::$container;
 
-        try {
-            $container->get(UserServiceInterface::class);
-        } catch (InvalidConfigException $exception) {
-            $container->set(UserServiceInterface::class, EmptyUserService::class);
-        }
-
         $container->setDefinitions([
             NotificatorInterface::class => Notificator::class,
             NotificationQueueRepositoryInterface::class => ActiveRecordNotificationQueueRepository::class,

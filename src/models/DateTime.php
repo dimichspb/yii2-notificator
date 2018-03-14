@@ -3,7 +3,7 @@ namespace dimichspb\yii\notificator\models;
 
 use Assert\Assertion;
 
-class DateTime
+class DateTime extends BaseString
 {
     protected $value;
     protected $format = 'Y-m-d H:i:s';
