@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'channel_class',
                         'value' => function (NotificationInterface $model) use ($notificator) {
-                            return $notificator->getChannel($model->getChannelClass())->getName();
+                            return $notificator->getChannelName($model->getChannelClass()->getValue());
                         },
                     ],
                     'user_ids',

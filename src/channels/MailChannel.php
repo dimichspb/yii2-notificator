@@ -6,8 +6,6 @@ use yii\mail\MailerInterface;
 
 class MailChannel extends BaseChannel
 {
-    protected $name = 'E-mail channel';
-
     /** @var MailerInterface  */
     protected $mailer;
 
@@ -20,9 +18,13 @@ class MailChannel extends BaseChannel
         'text' => 'text',
     ];
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(array $config = [])
     {
-        $this->mailer = $mailer;
+        if (!isset($config['mailer'])) {
+            $this->mailer = \Yii::$app->mailer;
+        }
+
+        parent::__construct($config);
     }
 
     public function send(MessageInterface $message)

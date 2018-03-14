@@ -1,6 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
+use dimichspb\yii\notificator\models\Notification\ChannelClass;
 use dimichspb\yii\notificator\models\Notification\Id;
 use dimichspb\yii\notificator\models\Notification\UserId;
 
@@ -24,8 +25,9 @@ interface NotificationInterface
      * @return MessageInterface
      */
     public function getMessage();
+
     /**
-     * @return string
+     * @return ChannelClass
      */
     public function getChannelClass();
 

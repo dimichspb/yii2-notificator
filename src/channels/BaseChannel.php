@@ -2,15 +2,11 @@
 namespace dimichspb\yii\notificator\channels;
 
 use dimichspb\yii\notificator\interfaces\ChannelInterface;
+use yii\base\BaseObject;
 
-abstract class BaseChannel implements ChannelInterface
+abstract class BaseChannel extends BaseObject implements ChannelInterface
 {
     protected $name;
-
-    public function className()
-    {
-        return get_class($this);
-    }
 
     public function getName()
     {

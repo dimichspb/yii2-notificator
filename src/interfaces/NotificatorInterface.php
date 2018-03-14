@@ -123,10 +123,12 @@ interface NotificatorInterface
     public function getChannels(array $params = []);
 
     /**
-     * @param $channelClass
+     * @param $channelClassName
      * @return ChannelInterface
      */
-    public function getChannel($channelClass);
+    public function getChannel($channelClassName);
+
+    public function getChannelName($channelClassName);
 
     public function handle(Event $event);
 

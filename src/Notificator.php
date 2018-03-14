@@ -3,6 +3,7 @@ namespace dimichspb\yii\notificator;
 
 use dimichspb\yii\notificator\channels\MailChannel;
 use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
+use dimichspb\yii\notificator\interfaces\ChannelInterface;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
@@ -223,15 +224,31 @@ class Notificator extends Component implements NotificatorInterface
         return $this->channels;
     }
 
-    public function getChannel($channelClass)
+    public function getChannel($channelClassName)
     {
-        $key = array_search($channelClass, array_column($this->channels, 'class'));
+        $key = $this->getChannelKey($channelClassName);
+
         if (is_null($key) || !isset($this->channels[$key])) {
             return null;
         }
         $config = $this->channels[$key];
 
-        return $this->container->get($channelClass, $config);
+        return $this->container->get($channelClassName, $config);
+    }
+
+    protected function getChannelKey($channelClassName)
+    {
+        $index = array_search($channelClassName, array_column($this->channels, 'class'));
+
+        return array_keys($this->channels)[$index];
+    }
+
+    public function getChannelName($channelClassName)
+    {
+        $key = $this->getChannelKey($channelClassName);
+        $name = isset($this->channels[$key]['name'])? $this->channels[$key]['name']: $key;
+
+        return \Yii::t('app', $name);
     }
 
     public function handle(Event $event)
