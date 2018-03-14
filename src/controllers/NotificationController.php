@@ -67,6 +67,7 @@ class NotificationController extends Controller
         return $this->render('index', [
             'searchModel' => $searchFormModel,
             'dataProvider' => $dataProvider,
+            'notificator' => $this->notificator,
         ]);
     }
 
@@ -88,6 +89,7 @@ class NotificationController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'notificator' => $this->notificator,
         ]);
     }
 
