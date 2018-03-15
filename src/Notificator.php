@@ -56,6 +56,7 @@ class Notificator extends Component implements NotificatorInterface
     public $channels = [
         'mail' => [
             'class' => MailChannel::class,
+            'name' => 'E-mail channel',
         ],
     ];
 

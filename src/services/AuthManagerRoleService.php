@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\services;
 
+use dimichspb\yii\notificator\models\UserId;
+
 class AuthManagerRoleService extends BaseRoleService
 {
     /**
@@ -19,4 +21,21 @@ class AuthManagerRoleService extends BaseRoleService
     {
         return $this->authManager->getRoles();
     }
+
+    /**
+     * @param $roleName
+     * @return array|UserId[]
+     * @throws \Assert\AssertionFailedException
+     */
+    public function getUserIdsByRoleName($roleName)
+    {
+        $userIds = [];
+        $users = $this->authManager->getUserIdsByRole($roleName);
+        foreach ($users as $user) {
+            $userIds[] = new UserId($user);
+        }
+        return $userIds;
+    }
+
+
 }

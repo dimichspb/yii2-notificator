@@ -46,4 +46,13 @@ class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeReposit
         return $searchModel->search($params);
     }
 
+    public function findByEventName($eventName)
+    {
+        /** @var ActiveRecord $notificationType */
+        $notificationType = $this->notificationTypeClass;
+
+        return $notificationType::findAll(['event' => $eventName]);
+    }
+
+
 }

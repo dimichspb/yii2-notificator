@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\Notification\Notification;
 use yii\data\DataProviderInterface;
 
 interface NotificationRepositoryInterface
@@ -15,4 +16,10 @@ interface NotificationRepositoryInterface
      * @return DataProviderInterface
      */
     public function filter(array $params = []);
+
+    /**
+     * @param NotificationTypeInterface $notificationType
+     * @return Notification[]
+     */
+    public function findByNotificationType(NotificationTypeInterface $notificationType);
 }

@@ -8,6 +8,8 @@ interface NotificationQueueRepositoryInterface
 {
     public function add(NotificationQueueInterface $notificationQueue);
 
+    public function create(NotificationInterface $notification, array $userIds);
+
     public function get(Id $id);
 
     public function update(NotificationQueueInterface $notificationQueue);

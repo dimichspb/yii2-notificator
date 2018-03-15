@@ -3,6 +3,7 @@ namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\notificator\models\Notification\ChannelClass;
 use dimichspb\yii\notificator\models\Notification\Id;
+use dimichspb\yii\notificator\models\Notification\RoleName;
 use dimichspb\yii\notificator\models\Notification\UserId;
 
 interface NotificationInterface
@@ -12,15 +13,19 @@ interface NotificationInterface
      */
     public function getId();
     /**
-     * @return UserId
+     * @return UserId[]
      */
     public function getUserIds();
 
+    /**
+     * @return RoleName[]
+     */
     public function getRoleNames();
 
     public function getIgnoredUserIds();
 
     public function getIgnoredRoleNames();
+
     /**
      * @return MessageInterface
      */

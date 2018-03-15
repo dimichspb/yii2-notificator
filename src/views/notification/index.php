@@ -32,8 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'notification_type_id',
                         'value' => function (NotificationInterface $model) use ($notificator) {
                             $notificationType = $notificator->getType($model->getNotificationTypeId());
-                            return $notificationType->getName();
+                            return Html::a($notificationType->getName(), ['notification-type/view', 'id' => $notificationType->getId()->getValue()]);
                         },
+                        'format' => 'raw',
                     ],
                     [
                         'attribute' => 'channel_class',

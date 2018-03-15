@@ -25,6 +25,15 @@ class ActiveRecordNotificationQueueRepository extends BaseNotificationQueueRepos
         return false;
     }
 
+    public function create(NotificationInterface $notification, array $userIds)
+    {
+        foreach ($userIds as $userId) {
+            /** @var NotificationQueueInterface $notificationQueue */
+            $notificationQueue = new ($this->notificationQueueClass)($notification, $userId);
+            $this->add($notificationQueue);
+        }
+    }
+
     public function get(Id $id)
     {
         /** @var ActiveRecord $notificationQueueClass */
