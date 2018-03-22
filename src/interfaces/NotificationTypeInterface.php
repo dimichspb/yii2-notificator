@@ -19,12 +19,7 @@ interface NotificationTypeInterface
     /**
      * @return Event[]
      */
-    public function getEvents();
-
-    /**
-     * @return Param[]
-     */
-    public function getParams();
+    public function getEvent();
 
     /**
      * @return NotificationTypeClass
@@ -33,8 +28,8 @@ interface NotificationTypeInterface
 
     public function getName();
     public function getDescription();
-
     public function getMessage(\yii\base\Event $event);
+
     /**
      * @return Status
      */
