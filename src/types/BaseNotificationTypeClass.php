@@ -3,8 +3,9 @@ namespace dimichspb\yii\notificator\types;
 
 use dimichspb\yii\notificator\interfaces\NotificationTypeClassInterface;
 use yii\base\View;
+use yii\base\ViewContextInterface;
 
-abstract class BaseNotificationTypeClass implements NotificationTypeClassInterface
+abstract class BaseNotificationTypeClass implements NotificationTypeClassInterface, ViewContextInterface
 {
     protected $_view;
 
@@ -32,6 +33,11 @@ abstract class BaseNotificationTypeClass implements NotificationTypeClassInterfa
         }
 
         return $this->_view;
+    }
+
+    public function getViewPath()
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'views';
     }
 
 

@@ -55,6 +55,8 @@ class NotificationCreateForm extends Model
             ['channel_class', 'in', 'range' => ArrayHelper::getColumn($this->available_channels, 'class')],
             [['users', 'ignored_users'], 'each', 'rule' => ['in', 'range' => ArrayHelper::getColumn($this->available_users, 'id')]],
             [['roles', 'ignored_roles'], 'each', 'rule' => ['in', 'range' => ArrayHelper::getColumn($this->available_roles, 'name')]],
+            [['roles', 'ignored_roles'], 'each', 'rule' => ['in', 'range' => ArrayHelper::getColumn($this->available_roles, 'name')]],
+            [['users', 'ignored_users', 'roles', 'ignored_roles'], 'default', 'value' => []],
         ];
     }
 

@@ -24,7 +24,7 @@ class BeforeRequestNotificationTypeClass extends BaseNotificationTypeClass
         ]);
     }
 
-    public function getEvent()
+    public function getEventName()
     {
          return Application::EVENT_BEFORE_REQUEST;
     }

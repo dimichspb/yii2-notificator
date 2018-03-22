@@ -29,7 +29,7 @@ abstract class BaseUserService extends BaseObject implements UserServiceInterfac
         /** @var IdentityInterface $identityClass */
         $identityClass = $this->getIdentityClass();
         if (is_null($id)) {
-            $id = $identityClass->getId();
+            $id = $this->userComponent->getIdentity()? $this->userComponent->getIdentity()->getId(): null;
         }
         return $id? $identityClass::findIdentity($id): null;
 

@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box-header">
             <p>
                 <?= Html::a(\Yii::t('notificator', 'Create Notification'), ['create'], ['class' => 'btn btn-success']) ?>
-                <?= Html::a(\Yii::t('notificator', 'Notification Queue'), ['notification-type/index'], ['class' => 'btn btn-default']) ?>
-                <?= Html::a(\Yii::t('notificator', 'Notification Types'), ['notification-queue/index'], ['class' => 'btn btn-default']) ?>
+                <?= Html::a(\Yii::t('notificator', 'Notification Types'), ['notification-type/index'], ['class' => 'btn btn-default']) ?>
+                <?= Html::a(\Yii::t('notificator', 'Notification Queue'), ['notification-queue/index'], ['class' => 'btn btn-default']) ?>
             </p>
         </div>
         <div class="box-body">

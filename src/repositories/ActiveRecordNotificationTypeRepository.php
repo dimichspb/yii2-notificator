@@ -60,14 +60,8 @@ class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeReposit
 
         $notificationTypes = $notificationType::find()->all();
 
-        $notificationTypes = array_filter($notificationTypes, function ($notificationType) use ($event) {
-            /** @var NotificationTypeInterface $notificationType*/
-            foreach ($notificationType->getEvents() as $item) {
-                if ($item->getValue() == $event->name) {
-                    return true;
-                }
-            }
-            return false;
+        $notificationTypes = array_filter($notificationTypes, function (NotificationTypeInterface $notificationType) use ($event) {
+            return $notificationType->getEvent()->getValue() == $event->name;
         });
 
         return $notificationTypes;

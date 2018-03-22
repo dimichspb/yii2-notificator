@@ -17,7 +17,7 @@ interface NotificationTypeInterface
     public function getId();
 
     /**
-     * @return Event[]
+     * @return Event
      */
     public function getEvent();
 

@@ -23,12 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
                     'created_at:datetime',
-                    /*[
+                    [
                         'attribute' => 'message',
                         'value' => function (NotificationQueue $model) {
-                            return $model->getMessage();
+                            return $model->getMessage()->getValue();
                         },
-                    ],*/
+                    ],
                     'attempts',
                     'statuses',
                     'sent_at:datetime',

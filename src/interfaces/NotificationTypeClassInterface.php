@@ -11,10 +11,7 @@ interface NotificationTypeClassInterface
 
     public function getDescription();
 
-    /**
-     * @return Event
-     */
-    public function getEvent();
+    public function getEventName();
 
     public function getMessage(Event $event);
 }

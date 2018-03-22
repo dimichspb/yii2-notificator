@@ -3,6 +3,8 @@ namespace dimichspb\yii\notificator\handlers;
 
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
+use dimichspb\yii\notificator\models\Notification\RoleName;
+use dimichspb\yii\notificator\models\UserId;
 use yii\base\Event;
 
 class BasicNotificationEventHandler extends BaseNotificationEventHandler
@@ -15,7 +17,7 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
             $userIds = $this->filterUserIds($notification->getUserIds(), $notification->getIgnoredUserIds());
             $roleNames = $this->filterRoleNames($notification->getRoleNames(), $notification->getIgnoredRoleNames());
             foreach ($roleNames as $roleName) {
-                $userIds = array_merge($userIds, $this->roleService->getUserIdsByRoleName($roleName));
+                $userIds = array_merge($userIds, $this->roleService->getUserIdsByRoleName($roleName->getValue()));
             }
             $notificationType = $this->getNotificationType($notification);
             $message = $notificationType->getMessage($event);
@@ -24,11 +26,21 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
         }
     }
 
+    /**
+     * @param array $userIds
+     * @param array $ignoredUserIds
+     * @return UserId[]
+     */
     protected function filterUserIds(array $userIds, array $ignoredUserIds = [])
     {
         return $this->filterArray($userIds, $ignoredUserIds);
     }
 
+    /**
+     * @param array $roleNames
+     * @param array $ignoredRoleNames
+     * @return RoleName[]
+     */
     protected function filterRoleNames(array $roleNames, array $ignoredRoleNames = [])
     {
         return $this->filterArray($roleNames, $ignoredRoleNames);
