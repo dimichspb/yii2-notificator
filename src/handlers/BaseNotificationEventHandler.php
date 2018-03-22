@@ -74,9 +74,10 @@ abstract class BaseNotificationEventHandler extends BaseObject implements Notifi
     protected function getNotificationsByEvent(Event $event)
     {
         $notificationTypes = $this->getNotificationTypesByEvent($event);
+
         $notifications = [];
         foreach ($notificationTypes as $notificationType) {
-            $notifications[] = $this->getNotificationsByNotificationType($notificationType);
+            $notifications = array_merge($notifications, $this->getNotificationsByNotificationType($notificationType));
         }
 
         return $notifications;

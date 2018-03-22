@@ -3,6 +3,7 @@ namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\notificator\models\NotificationType\Id;
 use dimichspb\yii\notificator\models\NotificationType\NotificationType;
+use yii\base\Event;
 use yii\data\DataProviderInterface;
 
 interface NotificationTypeRepositoryInterface
@@ -18,8 +19,8 @@ interface NotificationTypeRepositoryInterface
     public function filter(array $params = []);
 
     /**
-     * @param $eventName
+     * @param Event $event
      * @return NotificationType[]
      */
-    public function findByEventName($eventName);
+    public function findByEvent(Event $event);
 }

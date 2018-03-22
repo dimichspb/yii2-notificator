@@ -5,13 +5,17 @@ use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\models\NotificationType\search\NotificationTypeSearch;
 use dimichspb\yii\notificator\models\NotificationType\Id;
 use dimichspb\yii\notificator\models\NotificationType\NotificationType;
+use yii\base\Event;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeRepository
 {
     public $notificationTypeClass = NotificationType::class;
     public $notificationTypeSearchClass = NotificationTypeSearch::class;
+
+    protected static $processedEvents = [];
 
     public function get(Id $id)
     {
@@ -46,13 +50,42 @@ class ActiveRecordNotificationTypeRepository extends BaseNotificationTypeReposit
         return $searchModel->search($params);
     }
 
-    public function findByEventName($eventName)
+    public function findByEvent(Event $event)
     {
         /** @var ActiveRecord $notificationType */
         $notificationType = $this->notificationTypeClass;
+        if ($this->isAlreadyProccessed($event)) {
+            return [];
+        }
 
-        return $notificationType::findAll(['event' => $eventName]);
+        $notificationTypes = $notificationType::find()->all();
+
+        $notificationTypes = array_filter($notificationTypes, function ($notificationType) use ($event) {
+            /** @var NotificationTypeInterface $notificationType*/
+            foreach ($notificationType->getEvents() as $item) {
+                if ($item->getValue() == $event->name) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        return $notificationTypes;
     }
 
+    protected function isAlreadyProccessed(Event $event)
+    {
+        foreach (self::$processedEvents as $processedEvent) {
+            if ($processedEvent instanceof Event &&
+                $processedEvent->name == $event->name &&
+                get_class($processedEvent->sender) == get_class($event->sender)
+            ) {
+                return true;
+            }
+        }
+
+        self::$processedEvents[] = $event;
+        return false;
+    }
 
 }
