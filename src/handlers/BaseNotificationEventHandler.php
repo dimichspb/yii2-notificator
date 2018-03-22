@@ -59,7 +59,7 @@ abstract class BaseNotificationEventHandler extends BaseObject implements Notifi
 
     protected function getNotificationTypesByEvent(Event $event)
     {
-        return $this->notificationTypeRepository->findByEventName($event->name);
+        return $this->notificationTypeRepository->findByEvent($event);
     }
 
     protected function getNotificationsByNotificationType(NotificationTypeInterface $notificationType)

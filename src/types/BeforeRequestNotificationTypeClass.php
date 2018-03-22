@@ -2,6 +2,8 @@
 namespace dimichspb\yii\notificator\types;
 
 use yii\base\Application;
+use yii\base\Event;
+use yii\web\View;
 
 class BeforeRequestNotificationTypeClass extends BaseNotificationTypeClass
 {
@@ -15,31 +17,15 @@ class BeforeRequestNotificationTypeClass extends BaseNotificationTypeClass
         return \Yii::t('notificator', 'This is common basic notification example which is going to be fired at the moment BeforeRequest event is triggered');
     }
 
-    public function getView()
+    public function getMessage(Event $event)
     {
-        return 'views/before-request';
+        return $this->render('views/before-request', [
+            'senderClass' => get_class($event->sender),
+        ]);
     }
 
-    public function getPermission()
+    public function getEvent()
     {
-        // TODO: Implement getPermission() method.
+         return Application::EVENT_BEFORE_REQUEST;
     }
-
-    public function getEvents()
-    {
-        return [
-            Application::EVENT_BEFORE_REQUEST,
-        ];
-    }
-
-    public function getParams()
-    {
-        // TODO: Implement getParams() method.
-    }
-
-    public function setParams($data)
-    {
-        // TODO: Implement setParams() method.
-    }
-
 }

@@ -18,8 +18,7 @@ class m000000_000010_create_notification_type_table extends Migration
             'created_at' => $this->dateTime(),
             'created_by' => 'char(36)',
             'notification_type_class' => $this->string(255),
-            'events' => $this->text(),
-            'params' => $this->text(),
+            'event' => $this->string(255),
             'statuses' => $this->text(),
         ]);
         if ($this->db->driverName !== 'sqlite') {

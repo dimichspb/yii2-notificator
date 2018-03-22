@@ -34,6 +34,7 @@ interface NotificationTypeInterface
     public function getName();
     public function getDescription();
 
+    public function getMessage(\yii\base\Event $event);
     /**
      * @return Status
      */

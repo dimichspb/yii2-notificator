@@ -2,10 +2,10 @@
 namespace dimichspb\yii\notificator\repositories;
 
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\models\Notification\Id;
 use dimichspb\yii\notificator\models\Notification\search\NotificationSearch;
 use dimichspb\yii\notificator\models\Notification\Notification;
-use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use yii\db\ActiveRecord;
 
 class ActiveRecordNotificationRepository extends BaseNotificationRepository
@@ -62,12 +62,12 @@ class ActiveRecordNotificationRepository extends BaseNotificationRepository
         return $searchModel->search($params);
     }
 
-    public function findByNotificationTypeId(NotificationTypeId $notificationTypeId)
+    public function findByNotificationType(NotificationTypeInterface $notificationType)
     {
         /** @var ActiveRecord $notification */
         $notification = $this->notificationClass;
 
-        return $notification::findAll(['notification_type_id' => $notificationTypeId->getValue()]);
+        return $notification::findAll(['notification_type_id' => $notificationType->getId()->getValue()]);
     }
 
 

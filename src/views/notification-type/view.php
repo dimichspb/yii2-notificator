@@ -20,14 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'notification_type_class',
                     'name',
                     'description',
-                    [
-                        'attribute' => 'events',
-                        'value' => \yii\helpers\Json::encode($model->getEvents(), true),
-                    ],
-                    [
-                        'attribute' => 'params',
-                        'value' => \yii\helpers\Json::encode($model->getParams(), true),
-                    ],
+                    'event',
                     [
                         'attribute' => 'status',
                         'value' => $model->getStatus()->getValue(),

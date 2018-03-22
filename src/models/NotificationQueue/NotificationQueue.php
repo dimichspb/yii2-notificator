@@ -15,6 +15,7 @@ use dimichspb\yii\notificator\models\NotificationQueue\events\CreatedAtUpdatedEv
 use dimichspb\yii\notificator\models\NotificationQueue\events\SentAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\StatusAddedEvent;
 use dimichspb\yii\notificator\models\UserId;
+use dimichspb\yii\notificator\models\Message;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
@@ -68,21 +69,16 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     protected $attempts;
 
     /**
-     * @var MessageClass
+     * @var Message
      */
-    protected $message_class;
-
-    /**
-     * @var MessageData
-     */
-    protected $message_data;
+    protected $message;
 
     /**
      * @var Status[]
      */
     protected $statuses;
 
-    public function __construct(UserId $userId, NotificationInterface $notification)
+    public function __construct(NotificationInterface $notification, Message $message, UserId $userId)
     {
         $this->id = new Id();
         $this->created_at = new CreatedAt();
@@ -90,18 +86,16 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         $this->user_id = $userId;
         $this->notification_id = $notification->getId();
         $this->channel_class = $notification->getChannelClass();
-        //$this->message_class = $notification->getMessage()->className();
-        //$this->message_data = $notification->getMessage()->serialize();
+        $this->message = $message;
         $this->attempts = [];
         $this->statuses[] = new Status(Status::STATUS_NEW);
 
         parent::__construct();
     }
 
-    protected function setMessage(MessageInterface $message)
+    protected function setMessage(Message $message)
     {
-        $this->message_class = $message->className();
-        $this->message_data = $message->serialize();
+        $this->message = $message;
 
         $this->recordEvent(new MessageUpdatedEvent());
         return $this;
@@ -109,11 +103,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
 
     public function getMessage()
     {
-        /** @var MessageInterface $message */
-        $message = new $this->message_class;
-        $message->unserialize($this->message_data);
-
-        return $message;
+        return $this->message;
     }
 
     protected function setChannelClass($channelClass)
@@ -229,11 +219,10 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     protected function findSame()
     {
         $found = self::findOne([
-            'user_id' => $this->user_id,
-            'notification_id' => $this->notification_id,
-            'message_class' => $this->message_class,
-            'message_data' => $this->message_data,
-            'channel_class' => $this->channel_class,
+            'user_id' => $this->user_id->getValue(),
+            'notification_id' => $this->notification_id->getValue(),
+            'message' => $this->message->getValue(),
+            'channel_class' => $this->channel_class->getValue(),
             'sent_at' => null,
             'read_at' => null,
         ]);
@@ -287,11 +276,8 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         $this->notification_id = new \dimichspb\yii\notificator\models\Notification\Id(
             $this->getAttribute('notification_id')
         );
-        $this->message_class = new MessageClass(
-            $this->getAttribute('message_class')
-        );
-        $this->message_data = new MessageData(
-            $this->getAttribute('message_data')
+        $this->message = new Message(
+            $this->getAttribute('message')
         );
 
         $this->attempts = array_map(function ($row) {
@@ -320,9 +306,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         $this->setAttribute('read_at', $this->read_at? $this->read_at->getValue(): null);
         $this->setAttribute('channel_class', $this->channel_class->getValue());
         $this->setAttribute('notification_id', $this->notification_id->getValue());
-        $this->setAttribute('message_class', $this->message_class? $this->message_class->getValue(): null);
-        $this->setAttribute('message_data', $this->message_data? $this->message_data->getValue(): null);
-
+        $this->setAttribute('message', $this->message->getValue());
 
         $this->setAttribute('attempts', Json::encode(array_map(function (Attempt $attempt) {
             return [

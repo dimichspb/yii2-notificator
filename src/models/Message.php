@@ -1,9 +1,9 @@
 <?php
-namespace dimichspb\yii\notificator\models\NotificationQueue;
+namespace dimichspb\yii\notificator\models;
 
 use Assert\Assertion;
 
-class MessageData
+class Message
 {
     private $value;
 
@@ -14,7 +14,7 @@ class MessageData
      */
     public function __construct($value)
     {
-        Assertion::isJsonString($value);
+        Assertion::string($value);
 
         $this->value = $value;
     }

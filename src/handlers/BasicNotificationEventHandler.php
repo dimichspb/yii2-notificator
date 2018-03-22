@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\handlers;
 
+use dimichspb\yii\notificator\interfaces\NotificationInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use yii\base\Event;
 
 class BasicNotificationEventHandler extends BaseNotificationEventHandler
@@ -15,7 +17,10 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
             foreach ($roleNames as $roleName) {
                 $userIds = array_merge($userIds, $this->roleService->getUserIdsByRoleName($roleName));
             }
-            $this->notificationQueueRepository->create($notification, $userIds);
+            $notificationType = $this->getNotificationType($notification);
+            $message = $notificationType->getMessage($event);
+
+            $this->notificationQueueRepository->create($notification, $message, $userIds);
         }
     }
 
@@ -34,5 +39,15 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
         return array_filter($array, function ($item) use ($exceptionList) {
             return !in_array($item, $exceptionList);
         });
+    }
+
+    /**
+     * @param NotificationInterface $notification
+     * @return NotificationTypeInterface
+     */
+    protected function getNotificationType(NotificationInterface $notification)
+    {
+        $notificationTypeId = $notification->getNotificationTypeId();
+        return $this->notificationTypeRepository->get($notificationTypeId);
     }
 }

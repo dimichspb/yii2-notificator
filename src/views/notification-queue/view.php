@@ -19,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     'user_id',
                     'created_at:datetime',
-                    [
+                    /*[
                         'attribute' => 'message',
                         'value' => $model->getMessage(),
-                    ],
+                    ],*/
                     'attempts',
                     'statuses',
                     'sent_at:datetime',

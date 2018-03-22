@@ -26,22 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'notification_type_class',
                     'name',
                     'description',
-                    [
-                        'attribute' => 'events',
-                        'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
-                            $events = [];
-                            foreach ($notificationType->getEvents() as $event) {
-                                $events[] = $event->getValue();
-                            }
-                            return \yii\helpers\Json::encode($events, true);
-                        },
-                    ],
-                    [
-                        'attribute' => 'params',
-                        'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
-                            return \yii\helpers\Json::encode($notificationType->getParams(), true);
-                        },
-                    ],
+                    'event',
                     [
                         'attribute' => 'status',
                         'value' => function (\dimichspb\yii\notificator\interfaces\NotificationTypeInterface $notificationType) {
@@ -51,18 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{view}',
-                        /*'urlCreator' => function ($action, \dimichspb\yii\notificator\interfaces\NotificationTypeInterface $model) {
-                            $url = '';
-                            switch ($action) {
-                                case 'view':
-                                    //$url = ['view', 'id' => $model->getId()->getValue()];
-                                    $url = '123';
-                                    break;
-                                default:
-                                    break;
-                            };
-                            return $url;
-                        }*/
                     ],
                 ],
             ]); ?>

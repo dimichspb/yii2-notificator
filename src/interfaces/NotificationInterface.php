@@ -36,5 +36,8 @@ interface NotificationInterface
      */
     public function getChannelClass();
 
+    /**
+     * @return \dimichspb\yii\notificator\models\NotificationType\Id
+     */
     public function getNotificationTypeId();
 }

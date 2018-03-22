@@ -8,7 +8,7 @@ trait InstantiateTrait
 
     public static function instance($refresh = false)
     {
-        if ($refresh || self::$_prototype === null) {
+        if ($refresh || self::$_instance === null) {
             self::$_instance = self::instantiate([]);
         }
         return self::$_instance;

@@ -1,6 +1,7 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
+use dimichspb\yii\notificator\models\Message;
 use dimichspb\yii\notificator\models\NotificationQueue\Id;
 use yii\data\DataProviderInterface;
 
@@ -8,7 +9,7 @@ interface NotificationQueueRepositoryInterface
 {
     public function add(NotificationQueueInterface $notificationQueue);
 
-    public function create(NotificationInterface $notification, array $userIds);
+    public function create(NotificationInterface $notification, Message $message, array $userIds);
 
     public function get(Id $id);
 

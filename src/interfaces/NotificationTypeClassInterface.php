@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\interfaces;
 
+use yii\base\Event;
+
 interface NotificationTypeClassInterface
 {
     public function getClass();
@@ -9,16 +11,10 @@ interface NotificationTypeClassInterface
 
     public function getDescription();
 
-    public function getView();
-
-    public function getPermission();
-
     /**
-     * @return array
+     * @return Event
      */
-    public function getEvents();
+    public function getEvent();
 
-    public function getParams();
-
-    public function setParams($data);
+    public function getMessage(Event $event);
 }
