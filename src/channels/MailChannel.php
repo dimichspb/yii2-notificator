@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\channels;
 
 use dimichspb\yii\notificator\interfaces\MessageInterface;
+use dimichspb\yii\notificator\models\Message;
 use yii\mail\MailerInterface;
 
 class MailChannel extends BaseChannel
@@ -27,7 +28,7 @@ class MailChannel extends BaseChannel
         parent::__construct($config);
     }
 
-    public function send(MessageInterface $message)
+    public function send(Message $message)
     {
         $view = $this->preparePath($this->viewPath, $this->view);
 

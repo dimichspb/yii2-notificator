@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\notificator\models\Message;
+use dimichspb\yii\notificator\models\NotificationQueue\ChannelClass;
 use dimichspb\yii\notificator\models\UserId;
 
 interface NotificationQueueInterface extends EntityInterface
@@ -10,6 +11,10 @@ interface NotificationQueueInterface extends EntityInterface
     public function getId();
     public function isAlreadyInQueue();
     public function read();
+
+    /**
+     * @return ChannelClass
+     */
     public function getChannelClass();
     public function getMessage();
     public function attempt();

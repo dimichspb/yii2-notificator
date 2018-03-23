@@ -23,13 +23,11 @@ class ProcessNotificationQueueJob extends BaseObject implements RetryableJobInte
 
     public function execute($queue)
     {
-        $this->notificator = \Yii::$app->notificator;
+        $this->notificator = \Yii::$container->get(NotificatorInterface::class);
 
         $notificationQueueId = new Id($this->notificationQueueId);
-
         $notificationQueue = $this->notificator->getQueue($notificationQueueId);
-
-        $channel = $this->notificator->getChannel($notificationQueue->getChannelClass());
+        $channel = $this->notificator->getChannel($notificationQueue->getChannelClass()->getValue());
 
         try {
             $notificationQueue->attempt();

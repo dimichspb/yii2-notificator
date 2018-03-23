@@ -28,4 +28,6 @@ interface NotificationQueueRepositoryInterface
      * @return DataProviderInterface
      */
     public function queue(array $params = []);
+
+    public function getNotificationQueueClass();
 }

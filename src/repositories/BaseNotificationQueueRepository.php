@@ -9,15 +9,5 @@ use yii\base\BaseObject;
 
 abstract class BaseNotificationQueueRepository extends BaseObject implements NotificationQueueRepositoryInterface
 {
-    abstract function getNotificationQueueClass();
-
-    public function create(NotificationInterface $notification, Message $message, array $userIds)
-    {
-        $notificationQueueClass = $this->getNotificationQueueClass();
-        foreach ($userIds as $userId) {
-            /** @var NotificationQueueInterface $notificationQueue */
-            $notificationQueue = new $notificationQueueClass($notification, $message, $userId);
-            $this->add($notificationQueue);
-        }
-    }
+    abstract public function getNotificationQueueClass();
 }

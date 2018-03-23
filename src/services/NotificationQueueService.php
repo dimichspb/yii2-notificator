@@ -19,10 +19,12 @@ class NotificationQueueService extends BaseNotificationQueueService
 
     public function create(NotificationInterface $notification, Message $message, array $userIds)
     {
-        $result = $this->repository->create($notification, $message, $userIds);
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $result;
+        $notificationQueueClass = $this->repository->getNotificationQueueClass();
+        foreach ($userIds as $userId) {
+            /** @var NotificationQueueInterface $notificationQueue */
+            $notificationQueue = new $notificationQueueClass($notification, $message, $userId);
+            $this->add($notificationQueue);
+        }
     }
 
     public function get(Id $id)
