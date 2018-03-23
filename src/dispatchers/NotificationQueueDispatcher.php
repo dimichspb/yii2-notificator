@@ -21,7 +21,6 @@ class NotificationQueueDispatcher extends BaseDispatcher
     {
         foreach ($events as $event) {
             if ($event instanceof SavedEvent) {
-                var_dump('PUSH');
                 $this->queue->push(new ProcessNotificationQueueJob([
                     'notificationQueueId' => $event->getSender()->getId()->getValue()
                 ]));
