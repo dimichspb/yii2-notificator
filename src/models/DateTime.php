@@ -12,13 +12,13 @@ class DateTime extends BaseString
     {
         Assertion::nullOrNotEmpty($datetime);
 
-        $this->value = $datetime? \DateTimeImmutable::createFromFormat($this->format, $datetime): new \DateTimeImmutable();
+        $this->value = $datetime? \DateTimeImmutable::createFromFormat($this->format, $datetime): null;
 
     }
 
     public function getValue()
     {
-        return $this->value->format($this->format);
+        return $this->value? $this->value->format($this->format): null;
     }
 
     /**
@@ -28,7 +28,9 @@ class DateTime extends BaseString
      */
     public function add($interval)
     {
-        $this->value->add(new \DateInterval($interval));
+        if ($this->value) {
+            $this->value->add(new \DateInterval($interval));
+        }
 
         return $this;
     }

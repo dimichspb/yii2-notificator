@@ -80,6 +80,7 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
         $this->id = new Id();
         $this->created_at = new CreatedAt();
         $this->sent_at = new SentAt();
+        $this->read_at = new ReadAt();
         $this->user_id = $userId;
         $this->notification_id = $notification->getId();
         $this->channel_class = $notification->getChannelClass();
@@ -256,9 +257,9 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
         $this->updateLastAttempt(Attempt::ATTEMPT_PROCESS);
     }
 
-
     public function success($result)
     {
+        $this->setSentAt(new SentAt());
         $this->updateLastAttempt(Attempt::ATTEMPT_DONE, $result);
     }
 

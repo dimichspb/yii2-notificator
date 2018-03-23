@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => ['class' => 'table-responsive'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'id',
+                    //'id',
                     'created_at:datetime',
                     [
                         'attribute' => 'message',
@@ -30,7 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     'attempts',
-                    'statuses',
+                    [
+                        'attribute' => 'status',
+                        'value' => function (NotificationQueue $model) {
+                            return $model->getLastStatus()->getValue();
+                        },
+                    ],
                     'sent_at:datetime',
                     [
                         'class' => 'yii\grid\ActionColumn',
