@@ -368,7 +368,9 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
 
     public function afterSave($insert, $changedAttributes)
     {
-        $this->recordEvent(new SavedEvent($this));
+        if ($insert) {
+            $this->recordEvent(new SavedEvent($this));
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }

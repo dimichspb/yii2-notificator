@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\services;
 
 use dimichspb\yii\notificator\interfaces\UserServiceInterface;
+use dimichspb\yii\notificator\models\UserId;
 use yii\base\Application;
 use yii\base\BaseObject;
 use yii\web\IdentityInterface;
@@ -26,7 +27,7 @@ abstract class BaseUserService extends BaseObject implements UserServiceInterfac
 
     abstract public function getIdentity($id = null);
 
-    abstract public function getUser($id);
+    abstract public function getUser(UserId $id);
 
     protected function getIdentityClass()
     {

@@ -6,6 +6,7 @@ use dimichspb\yii\notificator\exceptions\UserNotFoundException;
 use dimichspb\yii\notificator\exceptions\UserUsernameNotSetException;
 use dimichspb\yii\notificator\models\User\Email;
 use dimichspb\yii\notificator\models\User\Username;
+use dimichspb\yii\notificator\models\UserId;
 use yii\base\Application;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
@@ -59,9 +60,9 @@ class ActiveRecordUserService extends BaseUserService
         return $identityClass::findAll($criteria);
     }
 
-    public function getUser($id)
+    public function getUser(UserId $id)
     {
-        $identity = $this->getIdentity($id);
+        $identity = $this->getIdentity($id->getValue());
         if (is_null($identity)) {
             throw new UserNotFoundException();
         }
