@@ -23,12 +23,12 @@ class User implements UserInterface
 
     public function getUsername()
     {
-        $this->username;
+        return $this->username;
     }
 
     public function getEmail()
     {
-        $this->email;
+        return $this->email;
     }
 
 }

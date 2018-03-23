@@ -39,8 +39,8 @@ class MailChannel extends BaseChannel
             ->compose($this->view, [
                 'message' => $message,
             ])
-            ->setTo([$to->getEmail() => $to->getUsername()])
-            ->setFrom([$from->getEmail() => $from->getUsername()])
+            ->setTo([$to->getEmail()->getValue() => $to->getUsername()->getValue()])
+            ->setFrom([$from->getEmail()->getValue() => $from->getUsername()->getValue()])
             ->send();
 
         if (!$result) {
