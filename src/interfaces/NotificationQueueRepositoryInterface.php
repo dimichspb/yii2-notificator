@@ -9,8 +9,6 @@ interface NotificationQueueRepositoryInterface
 {
     public function add(NotificationQueueInterface $notificationQueue);
 
-    public function create(NotificationInterface $notification, Message $message, array $userIds);
-
     /**
      * @param Id $id
      * @return NotificationQueueInterface
