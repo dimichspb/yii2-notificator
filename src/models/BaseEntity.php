@@ -7,5 +7,5 @@ use yii\db\ActiveRecord;
 
 abstract class BaseEntity extends ActiveRecord implements EntityInterface
 {
-    use EventTrait, InstantiateTrait;
+
 }

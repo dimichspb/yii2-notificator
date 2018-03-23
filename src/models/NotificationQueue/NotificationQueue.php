@@ -4,6 +4,8 @@ namespace dimichspb\yii\notificator\models\NotificationQueue;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
 use dimichspb\yii\notificator\models\BaseEntity;
+use dimichspb\yii\notificator\models\EventTrait;
+use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\NotificationQueue\events\AttemptAddedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\ChannelClassUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\MessageUpdatedEvent;
@@ -22,6 +24,7 @@ use yii\helpers\Json;
  */
 class NotificationQueue extends BaseEntity implements NotificationQueueInterface
 {
+    use EventTrait, InstantiateTrait;
     /**
      * @var Id
      */

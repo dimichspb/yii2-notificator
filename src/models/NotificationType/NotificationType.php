@@ -4,6 +4,8 @@ namespace dimichspb\yii\notificator\models\NotificationType;
 use dimichspb\yii\notificator\interfaces\NotificationTypeClassInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\models\BaseEntity;
+use dimichspb\yii\notificator\models\EventTrait;
+use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\Message;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedByUpdatedEvent;
@@ -14,6 +16,7 @@ use yii\helpers\Json;
 
 class NotificationType extends BaseEntity implements NotificationTypeInterface
 {
+    use EventTrait, InstantiateTrait;
     /**
      * @var Id
      */

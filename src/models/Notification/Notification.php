@@ -3,6 +3,8 @@ namespace dimichspb\yii\notificator\models\Notification;
 
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\models\BaseEntity;
+use dimichspb\yii\notificator\models\EventTrait;
+use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\Notification\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\Notification\events\CreatedByUpdatedEvent;
 use dimichspb\yii\notificator\models\Notification\events\IgnoredRoleNamesUpdatedEvent;
@@ -24,6 +26,7 @@ use yii\helpers\Json;
  */
 class Notification extends BaseEntity implements NotificationInterface
 {
+    use EventTrait, InstantiateTrait;
     /**
      * @var Id
      */
@@ -52,22 +55,22 @@ class Notification extends BaseEntity implements NotificationInterface
     /**
      * @var UserId[]
      */
-    protected $user_ids;
+    protected $user_ids = [];
 
     /**
      * @var RoleName[]
      */
-    protected $role_names;
+    protected $role_names = [];
 
     /**
      * @var UserId[]
      */
-    protected $ignored_user_ids;
+    protected $ignored_user_ids = [];
 
     /**
      * @var RoleName[]
      */
-    protected $ignored_role_names;
+    protected $ignored_role_names = [];
     
     /**
      * @var Status[]
