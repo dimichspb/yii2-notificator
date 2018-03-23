@@ -6,7 +6,7 @@ use dimichspb\yii\notificator\models\Notification\Id;
 use dimichspb\yii\notificator\models\Notification\RoleName;
 use dimichspb\yii\notificator\models\Notification\UserId;
 
-interface NotificationInterface
+interface NotificationInterface extends EntityInterface
 {
     /**
      * @return Id

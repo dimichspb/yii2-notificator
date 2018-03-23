@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationType\events;
 
-class EventRemovedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class EventRemovedEvent extends BaseEvent
 {
 
 }

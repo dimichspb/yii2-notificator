@@ -8,6 +8,10 @@ use yii\data\DataProviderInterface;
 
 interface NotificationTypeRepositoryInterface
 {
+    /**
+     * @param Id $id
+     * @return NotificationTypeInterface
+     */
     public function get(Id $id);
     public function add(NotificationTypeInterface $notificationType);
     public function remove(NotificationTypeInterface $notificationType);

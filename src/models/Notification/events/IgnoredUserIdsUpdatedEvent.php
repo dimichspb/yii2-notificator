@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\models\Notification\events;
 
-class IgnoredUserIdsUpdatedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class IgnoredUserIdsUpdatedEvent extends BaseEvent
 {
 }

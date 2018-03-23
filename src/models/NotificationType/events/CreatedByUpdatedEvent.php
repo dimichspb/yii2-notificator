@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationType\events;
 
-class CreatedByUpdatedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class CreatedByUpdatedEvent extends BaseEvent
 {
 
 }

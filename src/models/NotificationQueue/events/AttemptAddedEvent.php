@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationQueue\events;
 
-class AttemptAddedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class AttemptAddedEvent extends BaseEvent
 {
 
 }

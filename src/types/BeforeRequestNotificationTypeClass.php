@@ -19,7 +19,7 @@ class BeforeRequestNotificationTypeClass extends BaseNotificationTypeClass
 
     public function getMessage(Event $event)
     {
-        return $this->render('views/before-request', [
+        return $this->render('before-request', [
             'senderClass' => get_class($event->sender),
         ]);
     }

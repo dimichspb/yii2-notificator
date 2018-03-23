@@ -1,7 +1,9 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationQueue\events;
 
-class MessageUpdatedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class MessageUpdatedEvent extends BaseEvent
 {
 
 }

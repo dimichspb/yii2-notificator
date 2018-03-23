@@ -7,7 +7,7 @@ use dimichspb\yii\notificator\models\NotificationType\NotificationTypeClass;
 use dimichspb\yii\notificator\models\NotificationType\Param;
 use dimichspb\yii\notificator\models\NotificationType\Status;
 
-interface NotificationTypeInterface
+interface NotificationTypeInterface extends EntityInterface
 {
     public function __construct(NotificationTypeClassInterface $notificationTypeClass, $createdBy = null, array $config = []);
 

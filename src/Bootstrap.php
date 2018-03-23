@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator;
 
+use dimichspb\yii\notificator\dispatchers\NotificationQueueDispatcher;
+use dimichspb\yii\notificator\interfaces\DispatcherInterface;
 use dimichspb\yii\notificator\interfaces\RoleServiceInterface;
 use dimichspb\yii\notificator\interfaces\UserServiceInterface;
 use dimichspb\yii\notificator\repositories\ActiveRecordNotificationQueueRepository;
@@ -37,6 +39,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
             NotificationRepositoryInterface::class => ActiveRecordNotificationRepository::class,
             NotificationTypeRepositoryInterface::class => ActiveRecordNotificationTypeRepository::class,
             NotificationEventHandlerInterface::class => BasicNotificationEventHandler::class,
+            DispatcherInterface::class => NotificationQueueDispatcher::class,
             RoleServiceInterface::class => AuthManagerRoleService::class,
         ]);
 

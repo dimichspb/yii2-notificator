@@ -11,6 +11,10 @@ interface NotificationQueueRepositoryInterface
 
     public function create(NotificationInterface $notification, Message $message, array $userIds);
 
+    /**
+     * @param Id $id
+     * @return NotificationQueueInterface
+     */
     public function get(Id $id);
 
     public function update(NotificationQueueInterface $notificationQueue);

@@ -1,22 +1,18 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationQueue;
 
-use dimichspb\yii\notificator\interfaces\ChannelInterface;
-use dimichspb\yii\notificator\EventTrait;
-use dimichspb\yii\notificator\interfaces\MessageInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
-use dimichspb\yii\notificator\interfaces\NotificatorInterface;
-use dimichspb\yii\notificator\models\InstantiateTrait;
+use dimichspb\yii\notificator\models\BaseEntity;
 use dimichspb\yii\notificator\models\NotificationQueue\events\AttemptAddedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\ChannelClassUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\MessageUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\CreatedAtUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationQueue\events\SavedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\SentAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\StatusAddedEvent;
 use dimichspb\yii\notificator\models\UserId;
 use dimichspb\yii\notificator\models\Message;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
 /**
@@ -24,10 +20,8 @@ use yii\helpers\Json;
  * @package dimichspb\yii\notificator\models\NotificationQueue
  *
  */
-class NotificationQueue extends ActiveRecord implements NotificationQueueInterface
+class NotificationQueue extends BaseEntity implements NotificationQueueInterface
 {
-    use EventTrait, InstantiateTrait;
-
     /**
      * @var Id
      */
@@ -97,7 +91,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     {
         $this->message = $message;
 
-        $this->recordEvent(new MessageUpdatedEvent());
+        $this->recordEvent(new MessageUpdatedEvent($this));
         return $this;
     }
 
@@ -114,7 +108,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
 
         $this->channel_class = $channelClass;
 
-        $this->recordEvent(new ChannelClassUpdatedEvent());
+        $this->recordEvent(new ChannelClassUpdatedEvent($this));
         return $this;
     }
 
@@ -129,7 +123,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     protected function setSentAt(SentAt $sentAt)
     {
         $this->sent_at = $sentAt;
-        $this->recordEvent(new SentAtUpdatedEvent());
+        $this->recordEvent(new SentAtUpdatedEvent($this));
     }
 
     public function getSentAt()
@@ -143,7 +137,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     protected function setReadAt(ReadAt $readAt)
     {
         $this->read_at = $readAt;
-        $this->recordEvent(new CreatedAtUpdatedEvent());
+        $this->recordEvent(new CreatedAtUpdatedEvent($this));
     }
 
     public function getReadAt()
@@ -155,7 +149,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     {
         $this->statuses[] = $status;
         $this->save();
-        $this->recordEvent(new StatusAddedEvent());
+        $this->recordEvent(new StatusAddedEvent($this));
     }
 
     public function getLastStatus()
@@ -167,7 +161,7 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
     {
         $this->attempts[] = $attempt;
         $this->save();
-        $this->recordEvent(new AttemptAddedEvent());
+        $this->recordEvent(new AttemptAddedEvent($this));
     }
 
     public function getLastAttempt()
@@ -249,6 +243,27 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         return $found->save();
     }
 
+    public function attempt()
+    {
+        $this->addAttempt(new Attempt(Attempt::ATTEMPT_NEW));
+    }
+
+    public function process()
+    {
+        $this->updateLastAttempt(Attempt::ATTEMPT_PROCESS);
+    }
+
+
+    public function success($result)
+    {
+        $this->updateLastAttempt(Attempt::ATTEMPT_DONE, $result);
+    }
+
+    public function error($message)
+    {
+        $this->updateLastAttempt(Attempt::ATTEMPT_ERROR, $message);
+    }
+
 
     /**
      * @throws \Assert\AssertionFailedException
@@ -323,5 +338,12 @@ class NotificationQueue extends ActiveRecord implements NotificationQueueInterfa
         }, $this->statuses)));
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->recordEvent(new SavedEvent($this));
+
+        parent::afterSave($insert, $changedAttributes);
     }
 }

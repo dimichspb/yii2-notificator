@@ -31,9 +31,15 @@ class MailChannel extends BaseChannel
     {
         $view = $this->preparePath($this->viewPath, $this->view);
 
-        $this->mailer->compose($view, [
+        $result = $this->mailer->compose($view, [
             'message' => $message,
         ])->send();
+
+        if (!$result) {
+            $this->errors[] = 'Message was not sent';
+        }
+
+        return $result;
     }
 
     protected function preparePath($path, $file)

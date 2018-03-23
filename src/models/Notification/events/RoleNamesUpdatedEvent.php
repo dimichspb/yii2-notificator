@@ -1,6 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\models\Notification\events;
 
-class RoleNamesUpdatedEvent
+use dimichspb\yii\notificator\models\BaseEvent;
+
+class RoleNamesUpdatedEvent extends BaseEvent
 {
 }

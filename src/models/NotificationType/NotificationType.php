@@ -1,27 +1,19 @@
 <?php
 namespace dimichspb\yii\notificator\models\NotificationType;
 
-use Assert\Assertion;
-use dimichspb\yii\notificator\EventTrait;
 use dimichspb\yii\notificator\interfaces\NotificationTypeClassInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
-use dimichspb\yii\notificator\models\InstantiateTrait;
+use dimichspb\yii\notificator\models\BaseEntity;
 use dimichspb\yii\notificator\models\Message;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\CreatedByUpdatedEvent;
-use dimichspb\yii\notificator\models\NotificationType\events\EventAddedEvent;
-use dimichspb\yii\notificator\models\NotificationType\events\EventRemovedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\EventUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\NotificationTypeClassUpdatedEvent;
-use dimichspb\yii\notificator\models\NotificationType\events\ParamsUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\events\StatusAddedEvent;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
-class NotificationType extends ActiveRecord implements NotificationTypeInterface
+class NotificationType extends BaseEntity implements NotificationTypeInterface
 {
-    use EventTrait, InstantiateTrait;
-
     /**
      * @var Id
      */
@@ -73,7 +65,7 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
     protected function setCreatedAt(CreatedAt $createdAt)
     {
         $this->created_at = $createdAt;
-        $this->recordEvent(new CreatedAtUpdatedEvent());
+        $this->recordEvent(new CreatedAtUpdatedEvent($this));
 
         return $this;
     }
@@ -86,7 +78,7 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
     protected function setCreatedBy(CreatedBy $createdBy)
     {
         $this->created_by = $createdBy;
-        $this->recordEvent(new CreatedByUpdatedEvent());
+        $this->recordEvent(new CreatedByUpdatedEvent($this));
 
         return $this;
     }
@@ -99,7 +91,7 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
     protected function setNotificationTypeClass(NotificationTypeClass $notificationTypeClass)
     {
         $this->notification_type_class = $notificationTypeClass;
-        $this->recordEvent(new NotificationTypeClassUpdatedEvent());
+        $this->recordEvent(new NotificationTypeClassUpdatedEvent($this));
 
         return $this;
     }
@@ -144,7 +136,7 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
     public function setEvent(Event $event)
     {
         $this->event = $event;
-        $this->recordEvent(new EventUpdatedEvent());
+        $this->recordEvent(new EventUpdatedEvent($this));
 
         return $this;
     }
@@ -153,7 +145,7 @@ class NotificationType extends ActiveRecord implements NotificationTypeInterface
     {
         $this->statuses[] = $status;
         $this->save();
-        $this->recordEvent(new StatusAddedEvent());
+        $this->recordEvent(new StatusAddedEvent($this));
 
         return $this;
     }

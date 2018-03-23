@@ -57,8 +57,6 @@ interface NotificatorInterface
      */
     public function deactivateNotification(NotificationInterface $notification);
 
-
-
     /**
      * @param array
      * @return DataProviderInterface
@@ -89,7 +87,11 @@ interface NotificatorInterface
      */
     public function deleteQueue(NotificationQueueInterface $notificationQueue);
 
-
+    /**
+     * @param NotificationQueueInterface $notification
+     * @return mixed
+     */
+    public function read(NotificationQueueInterface $notification);
 
     /**
      * @param array $params
@@ -132,11 +134,13 @@ interface NotificatorInterface
 
     public function handle(Event $event);
 
-    public function process($limit = null);
-
-    public function read(NotificationQueueInterface $notification);
-
+    /**
+     * @return UserServiceInterface
+     */
     public function getUserService();
 
+    /**
+     * @return RoleServiceInterface
+     */
     public function getRoleService();
 }

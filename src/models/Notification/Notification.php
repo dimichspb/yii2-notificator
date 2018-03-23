@@ -1,10 +1,8 @@
 <?php
 namespace dimichspb\yii\notificator\models\Notification;
 
-use dimichspb\yii\notificator\EventTrait;
-use dimichspb\yii\notificator\interfaces\MessageInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
-use dimichspb\yii\notificator\models\InstantiateTrait;
+use dimichspb\yii\notificator\models\BaseEntity;
 use dimichspb\yii\notificator\models\Notification\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\Notification\events\CreatedByUpdatedEvent;
 use dimichspb\yii\notificator\models\Notification\events\IgnoredRoleNamesUpdatedEvent;
@@ -16,7 +14,6 @@ use dimichspb\yii\notificator\models\Notification\events\NotificationTypeIdUpdat
 use dimichspb\yii\notificator\models\Notification\events\UserIdsUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
 use dimichspb\yii\notificator\models\NotificationType\NotificationType;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
 /**
@@ -25,10 +22,8 @@ use yii\helpers\Json;
  *
  * @property NotificationType $notificationType
  */
-class Notification extends ActiveRecord implements NotificationInterface
+class Notification extends BaseEntity implements NotificationInterface
 {
-    use EventTrait, InstantiateTrait;
-
     /**
      * @var Id
      */
@@ -114,7 +109,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setNotificationTypeId(NotificationTypeId $notificationTypeId)
     {
         $this->notification_type_id = $notificationTypeId;
-        $this->recordEvent(new NotificationTypeIdUpdatedEvent());
+        $this->recordEvent(new NotificationTypeIdUpdatedEvent($this));
 
         return $this;
     }
@@ -127,7 +122,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setChannelClass(ChannelClass $channelClass)
     {
         $this->channel_class = $channelClass;
-        $this->recordEvent(new ChannelClassUpdatedEvent());
+        $this->recordEvent(new ChannelClassUpdatedEvent($this));
 
         return $this->channel_class;
     }
@@ -140,7 +135,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setCreatedAt(CreatedAt $createdAt)
     {
         $this->created_at = $createdAt;
-        $this->recordEvent(new CreatedAtUpdatedEvent());
+        $this->recordEvent(new CreatedAtUpdatedEvent($this));
 
         return $this;
     }
@@ -153,7 +148,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setCreatedBy(CreatedBy $createdBy)
     {
         $this->created_by = $createdBy;
-        $this->recordEvent(new CreatedByUpdatedEvent());
+        $this->recordEvent(new CreatedByUpdatedEvent($this));
 
         return $this;
     }
@@ -166,7 +161,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setUserIds(array $userIds = [])
     {
         $this->user_ids = $userIds;
-        $this->recordEvent(new UserIdsUpdatedEvent());
+        $this->recordEvent(new UserIdsUpdatedEvent($this));
         
         return $this;
     }
@@ -174,7 +169,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function addUserId($userId)
     {
         $this->user_ids[] = $userId;
-        $this->recordEvent(new UserIdsUpdatedEvent());
+        $this->recordEvent(new UserIdsUpdatedEvent($this));
         
         return $this;
     }
@@ -187,7 +182,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setRoleNames(array $roleNames = [])
     {
         $this->role_names = $roleNames;
-        $this->recordEvent(new RoleNamesUpdatedEvent());
+        $this->recordEvent(new RoleNamesUpdatedEvent($this));
         
         return $this;
     }
@@ -195,7 +190,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function addRoleName($roleName)
     {
         $this->role_names[] = $roleName;
-        $this->recordEvent(new RoleNamesUpdatedEvent());
+        $this->recordEvent(new RoleNamesUpdatedEvent($this));
         
         return $this;
     }
@@ -208,7 +203,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setIgnoredUserIds(array $ignoredUserIds = [])
     {
         $this->ignored_user_ids = $ignoredUserIds;
-        $this->recordEvent(new IgnoredUserIdsUpdatedEvent());
+        $this->recordEvent(new IgnoredUserIdsUpdatedEvent($this));
 
         return $this;
     }
@@ -216,7 +211,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function addIgnoredUserId($userId)
     {
         $this->ignored_user_ids[] = $userId;
-        $this->recordEvent(new IgnoredUserIdsUpdatedEvent());
+        $this->recordEvent(new IgnoredUserIdsUpdatedEvent($this));
 
         return $this;
     }
@@ -229,7 +224,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function setIgnoredRoleNames(array $ignoredRoleNames = [])
     {
         $this->ignored_role_names = $ignoredRoleNames;
-        $this->recordEvent(new IgnoredRoleNamesUpdatedEvent());
+        $this->recordEvent(new IgnoredRoleNamesUpdatedEvent($this));
 
         return $this;
     }
@@ -237,7 +232,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     protected function addIgnoredRoleName($ignoredRoleName)
     {
         $this->ignored_role_names[] = $ignoredRoleName;
-        $this->recordEvent(new IgnoredRoleNamesUpdatedEvent());
+        $this->recordEvent(new IgnoredRoleNamesUpdatedEvent($this));
 
         return $this;
     }
@@ -251,7 +246,7 @@ class Notification extends ActiveRecord implements NotificationInterface
     {
         $this->statuses[] = $status;
         $this->save();
-        $this->recordEvent(new StatusAddedEvent());
+        $this->recordEvent(new StatusAddedEvent($this));
     }
 
     public function getLastStatus()
