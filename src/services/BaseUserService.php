@@ -24,16 +24,9 @@ abstract class BaseUserService extends BaseObject implements UserServiceInterfac
         parent::__construct($config);
     }
 
-    public function getIdentity($id = null)
-    {
-        /** @var IdentityInterface $identityClass */
-        $identityClass = $this->getIdentityClass();
-        if (is_null($id)) {
-            $id = $this->userComponent->getIdentity()? $this->userComponent->getIdentity()->getId(): null;
-        }
-        return $id? $identityClass::findIdentity($id): null;
+    abstract public function getIdentity($id = null);
 
-    }
+    abstract public function getUser($id);
 
     protected function getIdentityClass()
     {

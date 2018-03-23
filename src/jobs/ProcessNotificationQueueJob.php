@@ -2,6 +2,7 @@
 namespace dimichspb\yii\notificator\jobs;
 
 use dimichspb\yii\notificator\exceptions\ChannelSendMethodReturnsFalseResultException;
+use dimichspb\yii\notificator\exceptions\UserEmailNotSetException;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\models\NotificationQueue\Id;
 use yii\base\BaseObject;
@@ -28,19 +29,22 @@ class ProcessNotificationQueueJob extends BaseObject implements RetryableJobInte
         $notificationQueueId = new Id($this->notificationQueueId);
         $notificationQueue = $this->notificator->getQueue($notificationQueueId);
         $channel = $this->notificator->getChannel($notificationQueue->getChannelClass()->getValue());
+        $to = $this->notificator->getUser($notificationQueue->getUserId());
+        $from = $this->notificator->getFrom();
 
         try {
             $notificationQueue->attempt();
-            $result = $channel->send($notificationQueue->getMessage());
+            $result = $channel->send($notificationQueue->getMessage(), $to, $from);
             if (is_null($result) || $result === false) {
                 throw new ChannelSendMethodReturnsFalseResultException();
             }
             $notificationQueue->success($result);
+            $this->notificator->updateQueue($notificationQueue);
         } catch (\Exception $exception) {
             $notificationQueue->error($exception->getMessage());
+            $this->notificator->updateQueue($notificationQueue);
+            throw $exception;
         }
-
-        $this->notificator->updateQueue($notificationQueue);
     }
 
     public function getTtr()

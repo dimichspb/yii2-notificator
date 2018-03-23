@@ -3,6 +3,7 @@ namespace dimichspb\yii\notificator\interfaces;
 
 use dimichspb\yii\notificator\forms\Notification\NotificationCreateForm;
 use dimichspb\yii\notificator\models\NotificationType\Id;
+use dimichspb\yii\notificator\models\UserId;
 use yii\base\Event;
 use yii\data\DataProviderInterface;
 use dimichspb\yii\notificator\models\Notification\Id as NotificationId;
@@ -138,6 +139,14 @@ interface NotificatorInterface
      * @return UserServiceInterface
      */
     public function getUserService();
+
+    /**
+     * @param UserId $userId
+     * @return UserInterface
+     */
+    public function getUser(UserId $userId);
+
+    public function getFrom();
 
     /**
      * @return RoleServiceInterface

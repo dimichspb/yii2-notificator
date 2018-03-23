@@ -8,11 +8,13 @@ use dimichspb\yii\notificator\models\EventTrait;
 use dimichspb\yii\notificator\models\InstantiateTrait;
 use dimichspb\yii\notificator\models\NotificationQueue\events\AttemptAddedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\ChannelClassUpdatedEvent;
+use dimichspb\yii\notificator\models\NotificationQueue\events\CreatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\MessageUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\CreatedAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\SavedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\SentAtUpdatedEvent;
 use dimichspb\yii\notificator\models\NotificationQueue\events\StatusAddedEvent;
+use dimichspb\yii\notificator\models\NotificationQueue\events\UserIdUpdatedEvent;
 use dimichspb\yii\notificator\models\UserId;
 use dimichspb\yii\notificator\models\Message;
 use yii\helpers\Json;
@@ -87,6 +89,8 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
         $this->message = $message;
         $this->attempts = [];
         $this->statuses[] = new Status(Status::STATUS_NEW);
+
+        $this->recordEvent(new CreatedEvent($this));
 
         parent::__construct();
     }
@@ -209,6 +213,19 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    protected function setUserId(UserId $userId)
+    {
+        $this->user_id = $userId;
+        $this->recordEvent(new UserIdUpdatedEvent($this));
+
+        return $this;
+    }
+
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 
     /**

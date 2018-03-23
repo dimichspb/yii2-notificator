@@ -250,6 +250,17 @@ class Notificator extends Component implements NotificatorInterface
         return $this->userService;
     }
 
+    public function getUser(\dimichspb\yii\notificator\models\UserId $userId)
+    {
+        return $this->userService->getIdentity($userId->getValue());
+    }
+
+    public function getFrom()
+    {
+        return $this->userService->getFrom();
+    }
+
+
     public function getRoleService()
     {
         return $this->roleService;

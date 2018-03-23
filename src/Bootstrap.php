@@ -65,10 +65,6 @@ class Bootstrap implements \yii\base\BootstrapInterface
            $app->controllerMap['notificator'] = 'dimichspb\yii\notificator\commands\NotificationQueueController';
            $app->controllerMap['migrate']['migrationPath'][] = '@vendor/dimichspb/yii2-notificator/src/migrations';
         }
-
-        \Yii::$app->queue->on(Queue::EVENT_AFTER_ERROR, function (ErrorEvent $event) {
-            var_dump($event);
-        });
     }
 
     /**

@@ -9,6 +9,11 @@ interface NotificationQueueInterface extends EntityInterface
 {
     public function __construct(NotificationInterface $notification, Message $message, UserId $userId);
     public function getId();
+
+    /**
+     * @return \dimichspb\yii\notificator\models\NotificationQueue\UserId
+     */
+    public function getUserId();
     public function isAlreadyInQueue();
     public function read();
 

@@ -2,8 +2,9 @@
 namespace dimichspb\yii\notificator\models;
 
 use Assert\Assertion;
+use yii\mail\MessageInterface;
 
-class Message
+class Message extends BaseString
 {
     private $value;
 

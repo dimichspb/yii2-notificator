@@ -2,8 +2,10 @@
 namespace dimichspb\yii\notificator\channels;
 
 use dimichspb\yii\notificator\interfaces\MessageInterface;
+use dimichspb\yii\notificator\interfaces\UserInterface;
 use dimichspb\yii\notificator\models\Message;
 use yii\mail\MailerInterface;
+use yii\web\IdentityInterface;
 
 class MailChannel extends BaseChannel
 {
@@ -28,13 +30,18 @@ class MailChannel extends BaseChannel
         parent::__construct($config);
     }
 
-    public function send(Message $message)
+    public function send(Message $message, UserInterface $to, UserInterface $from)
     {
-        $view = $this->preparePath($this->viewPath, $this->view);
+        //$view = $this->preparePath($this->viewPath, $this->view);
 
-        $result = $this->mailer->compose($view, [
-            'message' => $message,
-        ])->send();
+        $result = $this
+            ->mailer
+            ->compose($this->view, [
+                'message' => $message,
+            ])
+            ->setTo([$to->getEmail() => $to->getUsername()])
+            ->setFrom([$from->getEmail() => $from->getUsername()])
+            ->send();
 
         if (!$result) {
             $this->errors[] = 'Message was not sent';
