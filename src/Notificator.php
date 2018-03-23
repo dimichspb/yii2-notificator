@@ -9,9 +9,12 @@ use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\interfaces\RoleServiceInterface;
 use dimichspb\yii\notificator\interfaces\UserServiceInterface;
@@ -23,6 +26,7 @@ use dimichspb\yii\notificator\models\Notification\RoleName;
 use dimichspb\yii\notificator\models\Notification\UserId;
 use dimichspb\yii\notificator\models\NotificationQueue\Id as NotificationQueueId;
 use dimichspb\yii\notificator\models\NotificationType\Id as NotificationTypeId;
+use dimichspb\yii\notificator\services\NotificationTypeService;
 use yii\base\Component;
 use yii\base\Event;
 use yii\data\DataProviderInterface;
@@ -38,19 +42,19 @@ class Notificator extends Component implements NotificatorInterface
     const EVENT_AFTER_RUN = 'afterRun';
 
     /**
-     * @var NotificationQueueRepositoryInterface
+     * @var NotificationQueueServiceInterface
      */
-    public $notificationQueueRepository;
+    public $notificationQueueService;
 
     /**
-     * @var NotificationRepositoryInterface
+     * @var NotificationServiceInterface
      */
-    public $notificationRepository;
+    public $notificationService;
 
     /**
-     * @var NotificationTypeRepositoryInterface
+     * @var NotificationTypeServiceInterface
      */
-    public $notificationTypeRepository;
+    public $notificationTypeService;
 
     public $channels = [
         'mail' => [
@@ -84,9 +88,9 @@ class Notificator extends Component implements NotificatorInterface
     protected $container;
 
     public function __construct(Container $container,
-                                NotificationQueueRepositoryInterface $notificationQueueRepository,
-                                NotificationRepositoryInterface $notificationRepository,
-                                NotificationTypeRepositoryInterface $notificationTypeRepository,
+                                NotificationQueueServiceInterface $notificationQueueService,
+                                NotificationServiceInterface $notificationService,
+                                NotificationTypeServiceInterface $notificationTypeService,
                                 NotificationEventHandlerInterface $handler,
                                 DispatcherInterface $dispatcher,
                                 UserServiceInterface $userService,
@@ -94,9 +98,9 @@ class Notificator extends Component implements NotificatorInterface
                                 array $config = [])
     {
         $this->container = $container;
-        $this->notificationQueueRepository = $notificationQueueRepository;
-        $this->notificationRepository = $notificationRepository;
-        $this->notificationTypeRepository = $notificationTypeRepository;
+        $this->notificationQueueService = $notificationQueueService;
+        $this->notificationService = $notificationService;
+        $this->notificationTypeService = $notificationTypeService;
         $this->handler = $handler;
         $this->dispatcher = $dispatcher;
         $this->userService = $userService;
@@ -107,72 +111,32 @@ class Notificator extends Component implements NotificatorInterface
 
     public function notifications(array $params = [])
     {
-        return $this->notificationRepository->filter($params);
+        return $this->notificationService->filter($params);
     }
 
     public function addNotification(NotificationInterface $notification)
     {
-        $result = $this->notificationRepository->add($notification);
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $result;
+        return $this->notificationService->add($notification);
     }
 
     public function createNotification(NotificationCreateForm $notificationCreateForm)
     {
-        $notification = new Notification(
-            new NotificationTypeId($notificationCreateForm->notification_type_id),
-            new ChannelClass($notificationCreateForm->channel_class),
-            array_map(function ($row) {
-                return new UserId(
-                    $row
-                );
-            }, $notificationCreateForm->users),
-            array_map(function ($row) {
-                return new RoleName(
-                    $row
-                );
-            }, $notificationCreateForm->roles),
-            array_map(function ($row) {
-                return new UserId(
-                    $row
-                );
-            }, $notificationCreateForm->ignored_users),
-            array_map(function ($row) {
-                return new RoleName(
-                    $row
-                );
-            }, $notificationCreateForm->ignored_roles),
-            new CreatedBy($this->userService->getIdentity())
-        );
-
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $notification;
+        return $this->notificationService->create($notificationCreateForm);
     }
 
     public function getNotification(NotificationId $id)
     {
-        $notification = $this->notificationRepository->get($id);
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $notification;
+        return $this->notificationService->get($id);
     }
 
     public function updateNotification(NotificationInterface $notification)
     {
-        $result = $this->notificationRepository->update($notification);
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $result;
+        return $this->notificationService->update($notification);
     }
 
     public function deleteNotification(NotificationInterface $notification)
     {
-        $result = $this->notificationRepository->remove($notification);
-        $this->dispatcher->dispatch($notification->releaseEvents());
-
-        return $result;
+        return $this->notificationService->remove($notification);
     }
 
     public function activateNotification(NotificationInterface $notification)
@@ -191,84 +155,57 @@ class Notificator extends Component implements NotificatorInterface
      */
     public function queue(array $params = [])
     {
-        return $this->notificationQueueRepository->queue($params);
+        return $this->notificationQueueService->queue($params);
     }
 
     public function getQueue(NotificationQueueId $id)
     {
-        $notificationQueue = $this->notificationQueueRepository->get($id);
-        $this->dispatcher->dispatch($notificationQueue->releaseEvents());
-
-        return $notificationQueue;
+        return $this->notificationQueueService->get($id);
     }
 
     public function addQueue(NotificationQueueInterface $notificationQueue)
     {
-        $result = $this->notificationQueueRepository->add($notificationQueue);
-        $this->dispatcher->dispatch($notificationQueue->releaseEvents());
-
-        return $result;
+        return $this->notificationQueueService->add($notificationQueue);
     }
 
     public function updateQueue(NotificationQueueInterface $notificationQueue)
     {
-        $result = $this->notificationQueueRepository->update($notificationQueue);
-        $this->dispatcher->dispatch($notificationQueue->releaseEvents());
-
-        return $result;
+        return $this->notificationQueueService->update($notificationQueue);
     }
 
     public function deleteQueue(NotificationQueueInterface $notificationQueue)
     {
-        $result = $this->notificationQueueRepository->delete($notificationQueue);
-        $this->dispatcher->dispatch($notificationQueue->releaseEvents());
-
-        return $result;
+        return $this->notificationQueueService->delete($notificationQueue);
     }
 
     public function read(NotificationQueueInterface $notificationQueue)
     {
-        $result = $this->notificationQueueRepository->read($notificationQueue);
-        $this->dispatcher->dispatch($notificationQueue->releaseEvents());
-
-        return $result;
+        return $this->notificationQueueService->read($notificationQueue);
     }
 
     public function types(array $params = [])
     {
-        return $this->notificationTypeRepository->filter($params);
+        return $this->notificationTypeService->filter($params);
     }
 
     public function addType(NotificationTypeInterface $notificationType)
     {
-        $result =  $this->notificationTypeRepository->add($notificationType);
-        $this->dispatcher->dispatch($notificationType->releaseEvents());
-
-        return $result;
+        return $this->notificationTypeService->add($notificationType);
     }
 
     public function deleteType(NotificationTypeInterface $notificationType)
     {
-        $result = $this->notificationTypeRepository->remove($notificationType);
-        $this->dispatcher->dispatch($notificationType->releaseEvents());
-
-        return $result;
+        return $this->notificationTypeService->remove($notificationType);
     }
 
     public function getType(NotificationTypeId $id)
     {
-        $notificationType = $this->notificationTypeRepository->get($id);
-        $this->dispatcher->dispatch($notificationType->releaseEvents());
-
-        return $notificationType;
+        return $this->notificationTypeService->get($id);
     }
 
     public function updateType(NotificationTypeInterface $notificationType)
     {
-        $result = $this->notificationTypeRepository->update($notificationType);
-        $this->dispatcher->dispatch($notificationType->releaseEvents());
-
-        return $result;
+        return $this->notificationTypeService->update($notificationType);
     }
 
     public function getChannels(array $params = [])

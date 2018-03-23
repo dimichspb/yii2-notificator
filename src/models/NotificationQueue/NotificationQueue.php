@@ -350,4 +350,9 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
 
         parent::afterSave($insert, $changedAttributes);
     }
+
+    public static function find()
+    {
+        return parent::find()->orderBy(['created_at' => SORT_DESC]);
+    }
 }

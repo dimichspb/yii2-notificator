@@ -22,7 +22,7 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
             $notificationType = $this->getNotificationType($notification);
             $message = $notificationType->getMessage($event);
 
-            $this->notificationQueueRepository->create($notification, $message, $userIds);
+            $this->notificationQueueService->create($notification, $message, $userIds);
         }
     }
 
@@ -60,6 +60,6 @@ class BasicNotificationEventHandler extends BaseNotificationEventHandler
     protected function getNotificationType(NotificationInterface $notification)
     {
         $notificationTypeId = $notification->getNotificationTypeId();
-        return $this->notificationTypeRepository->get($notificationTypeId);
+        return $this->notificationTypeService->get($notificationTypeId);
     }
 }

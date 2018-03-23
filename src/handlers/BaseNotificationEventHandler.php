@@ -4,9 +4,12 @@ namespace dimichspb\yii\notificator\handlers;
 use dimichspb\yii\notificator\interfaces\NotificationEventHandlerInterface;
 use dimichspb\yii\notificator\interfaces\NotificationInterface;
 use dimichspb\yii\notificator\interfaces\NotificationQueueRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationQueueServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificationRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeInterface;
 use dimichspb\yii\notificator\interfaces\NotificationTypeRepositoryInterface;
+use dimichspb\yii\notificator\interfaces\NotificationTypeServiceInterface;
 use dimichspb\yii\notificator\interfaces\NotificatorInterface;
 use dimichspb\yii\notificator\interfaces\RoleServiceInterface;
 use dimichspb\yii\notificator\interfaces\UserServiceInterface;
@@ -16,19 +19,19 @@ use yii\base\Event;
 abstract class BaseNotificationEventHandler extends BaseObject implements NotificationEventHandlerInterface
 {
     /**
-     * @var NotificationRepositoryInterface
+     * @var NotificationServiceInterface
      */
-    protected $notificationRepository;
+    protected $notificationService;
 
     /**
-     * @var NotificationQueueRepositoryInterface
+     * @var NotificationQueueServiceInterface
      */
-    protected $notificationQueueRepository;
+    protected $notificationQueueService;
 
     /**
-     * @var NotificationTypeRepositoryInterface
+     * @var NotificationTypeServiceInterface
      */
-    protected $notificationTypeRepository;
+    protected $notificationTypeService;
 
     /**
      * @var UserServiceInterface
@@ -41,16 +44,16 @@ abstract class BaseNotificationEventHandler extends BaseObject implements Notifi
     protected $roleService;
 
     public function __construct(
-        NotificationRepositoryInterface $notificationRepository,
-        NotificationQueueRepositoryInterface $notificationQueueRepository,
-        NotificationTypeRepositoryInterface $notificationTypeRepository,
+        NotificationServiceInterface $notificationService,
+        NotificationQueueServiceInterface $notificationQueueService,
+        NotificationTypeServiceInterface $notificationTypeService,
         UserServiceInterface $userService,
         RoleServiceInterface $roleService,
         array $config = []
     ) {
-        $this->notificationRepository = $notificationRepository;
-        $this->notificationQueueRepository = $notificationQueueRepository;
-        $this->notificationTypeRepository = $notificationTypeRepository;
+        $this->notificationService = $notificationService;
+        $this->notificationQueueService = $notificationQueueService;
+        $this->notificationTypeService = $notificationTypeService;
         $this->userService = $userService;
         $this->roleService = $roleService;
 
@@ -59,12 +62,12 @@ abstract class BaseNotificationEventHandler extends BaseObject implements Notifi
 
     protected function getNotificationTypesByEvent(Event $event)
     {
-        return $this->notificationTypeRepository->findByEvent($event);
+        return $this->notificationTypeService->findByEvent($event);
     }
 
     protected function getNotificationsByNotificationType(NotificationTypeInterface $notificationType)
     {
-        return $this->notificationRepository->findByNotificationType($notificationType);
+        return $this->notificationService->findByNotificationType($notificationType);
     }
 
     /**
