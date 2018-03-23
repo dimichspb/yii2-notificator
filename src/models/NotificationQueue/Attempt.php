@@ -16,12 +16,14 @@ class Attempt
     private $created_at;
     private $changed_at;
 
-    public function __construct($value, CreatedAt $createdAt = null)
+    public function __construct($value, $result, CreatedAt $createdAt = null, ChangedAt $changedAt = null)
     {
         Assertion::inArray($value, $this->getAvailableValues());
 
         $this->value = $value;
-        $this->created_at = $createdAt?: new CreatedAt();
+        $this->result = $result;
+        $this->created_at = $createdAt;
+        $this->changed_at = $changedAt;
     }
 
     public function getValue()

@@ -250,6 +250,7 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
     public function attempt()
     {
         $this->addAttempt(new Attempt(Attempt::ATTEMPT_NEW));
+        $this->updateLastAttempt(Attempt::ATTEMPT_PROCESS);
     }
 
     public function process()
@@ -302,7 +303,9 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
         $this->attempts = array_map(function ($row) {
             return new Attempt(
                 $row['value'],
-                new CreatedAt($row['created_at'])
+                $row['result'],
+                new CreatedAt($row['created_at']),
+                new ChangedAt($row['changed_at'])
             );
         }, Json::decode($this->getAttribute('attempts')));
 
@@ -330,7 +333,9 @@ class NotificationQueue extends BaseEntity implements NotificationQueueInterface
         $this->setAttribute('attempts', Json::encode(array_map(function (Attempt $attempt) {
             return [
                 'value' => $attempt->getValue(),
+                'result' => $attempt->getResult(),
                 'created_at' => $attempt->getCreatedAt()->getValue(),
+                'changed_at' => $attempt->getChangedAt()->getValue()
             ];
         }, $this->attempts)));
 
