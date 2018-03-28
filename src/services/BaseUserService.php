@@ -31,6 +31,6 @@ abstract class BaseUserService extends BaseObject implements UserServiceInterfac
 
     protected function getIdentityClass()
     {
-        return $this->userComponent->identityClass;
+        return $this->userComponent? $this->userComponent->identityClass: '';
     }
 }

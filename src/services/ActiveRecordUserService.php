@@ -20,15 +20,16 @@ class ActiveRecordUserService extends BaseUserService
 
     public function __construct(array $config = [])
     {
+        parent::__construct($config);
+
         $this->fromName = isset(\Yii::$app->params['adminEmail'])? \Yii::$app->params['adminEmail']: $this->fromEmail;
 
-        $identity = new ($this->getIdentityClass());
+        $identityClass = $this->getIdentityClass();
+        $identity = new $identityClass;
 
         if (!$identity instanceof ActiveRecord) {
             throw new InvalidConfigException();
         }
-
-        parent::__construct($config);
     }
 
     public function getIdentity($id = null)
@@ -36,7 +37,7 @@ class ActiveRecordUserService extends BaseUserService
         /** @var IdentityInterface $identityClass */
         $identityClass = $this->getIdentityClass();
         if (is_null($id)) {
-            $id = $this->userComponent->getIdentity()? $this->userComponent->getIdentity()->getId(): null;
+            $id = $this->userComponent && $this->userComponent->getIdentity()? $this->userComponent->getIdentity()->getId(): null;
         }
 
         return $id? $identityClass::findIdentity($id): null;

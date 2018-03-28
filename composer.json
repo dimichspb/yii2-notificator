@@ -27,8 +27,5 @@
       "dimichspb\\yii\\notificator\\": "src/",
       "dimichspb\\yii\\notificator\\tests\\": "tests/"
     }
-  },
-  "extra": {
-    "bootstrap": "dimichspb\\yii\\notificator\\Bootstrap"
   }
 }
